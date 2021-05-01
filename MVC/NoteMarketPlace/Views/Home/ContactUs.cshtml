@@ -1,0 +1,97 @@
+﻿@model NoteMarketPlace.Models.ContactU
+@if (ViewBag.isRegister)
+{
+    ViewBag.Title = "Contact Us";
+    Layout = "~/Views/Shared/Register.cshtml";
+}
+else
+{
+    ViewBag.Title = "Contact Us";
+    Layout = "~/Views/Shared/WithoutRegister.cshtml";
+}
+
+<!-- Heading -->
+<section>
+    <div id="userprofile-img">
+        <div class="centerh2">
+
+            <h2>Contact Us</h2>
+
+        </div>
+    </div>
+</section>
+<!-- Heading -->
+<!-- Contact Us Form -->
+<form class="user-details-form" method="post">
+
+    <section id="personal-details" class="user-profile  contact-us content-box-md">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="heading">
+                        <h3>Get In Touch</h3>
+                        <label class="mylabel">Let us know how to get back to you</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label class="mylabel">Full Name *</label>
+                        @*<input type="text" class="form-control InputEmail1" placeholder="Enter your full name">*@
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control InputEmail1", @placeholder = "Enter your full name" })
+                        @Html.ValidationMessageFor(m => m.FullName)
+
+                    </div>
+                    <!-- Email -->
+                    @if (Model != null)
+                    {
+                        <div class="form-group">
+                            <label class="mylabel">Email Address *</label>
+                            @*<input type="text" class="form-control InputEmail1" placeholder="Enter your email address">*@
+                            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control InputEmail1", @readonly = "readonly", @placeholder = "Enter your email address" })
+                            @Html.ValidationMessageFor(m => m.EmailAddress)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label class="mylabel">Email Address *</label>
+                            @*<input type="text" class="form-control InputEmail1" placeholder="Enter your email address">*@
+                            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control InputEmail1", @placeholder = "Enter your email address" })
+                            @Html.ValidationMessageFor(m => m.EmailAddress)
+                        </div>
+                    }
+                    <!-- Subject -->
+                    <div class="form-group">
+                        <label class="mylabel">Subject *</label>
+                        @*<input type="text" class="form-control InputEmail1" placeholder="Enter your subject">*@
+                        @Html.TextBoxFor(m => m.Subject, new { @class = "form-control InputEmail1", @placeholder = "Enter your subject" })
+                        @Html.ValidationMessageFor(m => m.Subject)
+                    </div>
+                </div>
+                <!-- Question -->
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+
+                        <div class="textarea-input">
+                            <label class="mylabel" for="InputEmail1">Comments/Questions *</label>
+                            @*<textarea placeholder="Comments..." class="form-control InputEmail1"></textarea>*@
+                            @Html.TextAreaFor(m => m.Comments, new { @class = "form-control InputEmail1", @placeholder = "Comments..." })
+                            @Html.ValidationMessageFor(m => m.Comments)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-6">
+                    <button type="submit" class="btn btn-primary btn-block login-btn text-uppercase text-center" id="mybtn"><b>submit</b></button>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+<!-- Contact Us Form -->

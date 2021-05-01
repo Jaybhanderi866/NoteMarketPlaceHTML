@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width-device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>@ViewBag.Title</title>
+
+    <!-- Icon -->
+    <link rel="Icon" href="/Content/img/favicon/favicon.ico">
+    
+
+    <!-- Open Sans Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    @*<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">*@
+    @Styles.Render("/Content/css/font-awesome/css/font-awesome.min.css")
+
+    <!-- Bootstrap CSS -->
+    @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">*@
+    @Styles.Render("/Content/css/bootstrap/bootstrap.min.css")
+
+    <!-- Custome CSS -->
+    @*<link rel="stylesheet" href="css/style.css">*@
+    @Styles.Render("/Content/css/style.css")
+
+    <!-- Responsive CSS -->
+    @*<link rel="stylesheet" href="css/responsive.css">*@
+    @Styles.Render("/Content/css/responsive.css")
+
+</head>
+
+<body data-target=".navbar">
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar fixed-top navbar-expand-lg white-nav-top white-navbar">
+            <div class="container">
+
+                <div class="navbar-header">
+
+                    <!-- Mobile Menu Open Button -->
+                    <span id="mobile-nav-open-btn">&#9776;</span>
+
+                    <!-- Logo -->
+                    <a class="navbar-brand" href="@Url.Action("Home","Home")"><img class="img-fluid" src="/Content/img/pre-login/Capture.png"></a>
+                </div>
+
+                <!-- Main Menu -->
+                <div class="collapse navbar-collapse justify-content-end default-header" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            @Html.ActionLink("Search Notes", "SearchNote", "Home", null, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Sell Your Notes", "Dashboard", "Home", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item">
+                            @Html.ActionLink("FAQ", "FAQ", "Home", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item">
+                            @Html.ActionLink("Contact Us", "ContactUs", "Home", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item">
+                            @Html.ActionLink("Login", "Login", "Home", null, new { @class = "nav-link", @id = "mynavbtn" })
+                            @*<a class="nav-link" id="mynavbtn" onclick="location.href='@Url.Action("login", "Home")'">Login</a>*@
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div id="mobile-nav">
+                    <!-- Mobile Menu Close Button -->
+                    <span id="mobile-nav-close-btn">&times;</span>
+
+                    <div id="mobile-nav-content">
+                        <ul class="navbar-nav">
+                            <<li>
+                                @Html.ActionLink("Search Notes", "SearchNote", "Home", null, new { @class = "nav-link" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Sell Your Notes", "SellNote", "Home", null, new { @class = "nav-link" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Buyer Requests", "BuyerRequest", "Home", null, new { @class = "nav-link" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("FAQ", "FAQ", "Home", null, new { @class = "nav-link" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Contact Us", "ContactUs", "Home", null, new { @class = "nav-link" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Login", "Login","Home",null, new { @class = "btn text-center", @id="mynavbtn"})
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+    <!-- Header Ends -->
+   
+     
+    @RenderBody()
+    
+    
+    <!-- footer -->
+    <footer>
+        <div class="aaa">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+
+                        <p>
+                            Copyright &copy; Tatvasoft All Rights Reserved.
+                        </p>
+
+                    </div>
+                    <div class="col-md-6 col-12 text-right">
+
+                        <ul class="social-list">
+                            <li><a href=""><i class="fa fa-facebook"></i></a></li>
+                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                            <li><a href=""><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer ends -->
+    <!-- JQuery -->
+    @*<script src="js/jquery.js"></script>*@
+    @Scripts.Render("/Content/js/jquery.js")
+
+    <!-- Bootstrap JS -->
+    @*<script src="js/bootstrap/bootstrap.min.js"></script>*@
+    @Scripts.Render("/Content/js/bootstrap/bootstrap.min.js")
+
+    <!-- Custom JS -->
+    @*<script src="js/script.js"></script>*@
+    @Scripts.Render("/Content/js/script.js")
+</body>
+</html>

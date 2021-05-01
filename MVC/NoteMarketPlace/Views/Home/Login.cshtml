@@ -1,0 +1,87 @@
+﻿@model NoteMarketPlace.Models.User
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/WithoutHeader.cshtml";
+}
+
+<!-- Login Page -->
+<section id="background">
+    <div id="login-page" class="container">
+
+        <!-- LOGO -->
+        <div class="row justify-content-center">
+            <div id="loginlogo" class="text-center">
+                <img src="/Content/img/pre-login/top-logo.png" class="img-fluid" alt="Login">
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-12 col-sm-11 col-lg-9 col-xl-8">
+                <div id="login-form">
+
+                    <!-- Heading -->
+                    <div id="login-head" class="text-center">
+                        <h2>Login</h2>
+                        <p>Enter your email address and password to login</p>
+                    </div>
+
+                    <!-- Form -->
+                    <form method="post">
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="mylabel" for="InputEmail1">Email</label>
+                            @*<input type="email" class="form-control InputEmail1" aria-describedby="emailHelp" placeholder="Enter your Email Address">*@
+                            @Html.TextBoxFor(m => m.EmailID, new { @class = "form-control InputEmail1", @Placeholder = "Enter Your Email Address" })
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 col-md-6">
+                                        <label class="mylabel InputPassword1">Password</label>
+                                    </div>
+
+                                    <!-- Forgot Password -->
+                                    <div class="col-6 col-sm-6 clo-md-6  text-right">
+                                        @*<a href="#" class="myforgotlabel">forgot password?</a>*@
+                                        @Html.ActionLink("Forgot Password?", "ForgotPassword")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Eye icon -->
+                            <div class="wrapper">
+                                @*<input type="password" class="errorborder form-control InputEmail1 InputPassword1" placeholder="Enter your password" id="InputPassword1">*@
+                                @Html.TextBoxFor(m => m.Password, new { @class = "form-control InputEmail1 InputPassword1", @placeholder = "Enter your password", @type = "password", @id = "InputPassword1" })
+                                <span toggle="#InputPassword1" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                            </div>
+
+                            <!-- Error Message -->
+                            <div class="errormsg">
+                                @*<p>The password that you've entered is incorrect</p>*@
+                                <p>@ViewBag.auth_msg</p>
+                            </div>
+                        </div>
+
+                        <!-- Remember Me -->
+
+                        <div class="form-group form-check check1">
+                            @*<input type="checkbox" class="form-check-input exampleCheck">*@
+                            @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input exampleCheck"})
+                            <label class="checkbox1" for="exampleCheck">Remember Me</label>
+                        </div>
+
+                        <!-- LOGIN Button -->
+                        <button type="submit" class="btn text-uppercase text-center" id="mybtn"><b>login</b></button>
+                    </form>
+
+                    <p class="text-center mytext">Don't have an account? <span>@Html.ActionLink("Sign Up", "SignUp")</span></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Login Page End -->

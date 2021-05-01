@@ -1,0 +1,554 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NoteMarketPlaceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BuyerRequest">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NoteID" Type="Int32" Nullable="false" />
+    <Property Name="BuyerID" Type="Int32" Nullable="false" />
+    <Property Name="SellerID" Type="Int32" Nullable="false" />
+    <Property Name="NoteTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="BuyerEmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="SellType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_BuyerRequest_Buyer" FromRole="BuyerRequest" ToRole="User" />
+    <NavigationProperty Name="NoteDetail" Relationship="Self.FK_BuyerRequest_NoteDetails" FromRole="BuyerRequest" ToRole="NoteDetails" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_BuyerRequest_Seller" FromRole="BuyerRequest" ToRole="User" />
+  </EntityType>
+  <EntityType Name="ContactU">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Subject" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_Countries" FromRole="Countries" ToRole="NoteDetails" />
+  </EntityType>
+  <EntityType Name="Feedback">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NoteID" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="Ratings" Type="Int32" Nullable="false" />
+    <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="NoteDetail" Relationship="Self.FK_Feedback_NoteDetails" FromRole="Feedback" ToRole="NoteDetails" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Feedback_User" FromRole="Feedback" ToRole="User" />
+  </EntityType>
+  <EntityType Name="NoteAttachement">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NoteID" Type="Int32" Nullable="false" />
+    <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="NoteDetail" Relationship="Self.FK_NoteAttachement_NoteDetails1" FromRole="NoteAttachement" ToRole="NoteDetails" />
+  </EntityType>
+  <EntityType Name="NoteCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_NoteCategories" FromRole="NoteCategories" ToRole="NoteDetails" />
+  </EntityType>
+  <EntityType Name="NoteDetail">
+    <Key>
+      <PropertyRef Name="NoteID" />
+    </Key>
+    <Property Name="NoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="ActionedBy" Type="Int32" />
+    <Property Name="NoteStatus" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Category" Type="Int32" Nullable="false" />
+    <Property Name="BookPicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="NoteType" Type="Int32" />
+    <Property Name="NumberOfPages" Type="Int32" />
+    <Property Name="NotesDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="InstitutionName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Country" Type="Int32" />
+    <Property Name="Course" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CourseCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Professor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsPaid" Type="Boolean" Nullable="false" />
+    <Property Name="SellPrice" Type="Int32" />
+    <Property Name="NotePreview" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="NoteSize" Type="Int32" />
+    <Property Name="PublishedDate" Type="DateTime" Precision="3" />
+    <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="BuyerRequests" Relationship="Self.FK_BuyerRequest_NoteDetails" FromRole="NoteDetails" ToRole="BuyerRequest" />
+    <NavigationProperty Name="Country1" Relationship="Self.FK_NoteDetails_Countries" FromRole="NoteDetails" ToRole="Countries" />
+    <NavigationProperty Name="Feedbacks" Relationship="Self.FK_Feedback_NoteDetails" FromRole="NoteDetails" ToRole="Feedback" />
+    <NavigationProperty Name="NoteAttachements" Relationship="Self.FK_NoteAttachement_NoteDetails1" FromRole="NoteDetails" ToRole="NoteAttachement" />
+    <NavigationProperty Name="NoteCategory" Relationship="Self.FK_NoteDetails_NoteCategories" FromRole="NoteDetails" ToRole="NoteCategories" />
+    <NavigationProperty Name="NoteStatu" Relationship="Self.FK_NoteDetails_NoteStatus" FromRole="NoteDetails" ToRole="NoteStatus" />
+    <NavigationProperty Name="NoteType1" Relationship="Self.FK_NoteDetails_NoteTypes" FromRole="NoteDetails" ToRole="NoteTypes" />
+    <NavigationProperty Name="User" Relationship="Self.FK_NoteDetails_User" FromRole="NoteDetails" ToRole="User" />
+    <NavigationProperty Name="SpamReports" Relationship="Self.FK_SpamReport_NoteDetails" FromRole="NoteDetails" ToRole="SpamReport" />
+  </EntityType>
+  <EntityType Name="NoteStatu">
+    <Key>
+      <PropertyRef Name="NotesStatusID" />
+    </Key>
+    <Property Name="NotesStatusID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_NoteStatus" FromRole="NoteStatus" ToRole="NoteDetails" />
+  </EntityType>
+  <EntityType Name="NoteType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_NoteTypes" FromRole="NoteTypes" ToRole="NoteDetails" />
+  </EntityType>
+  <EntityType Name="SpamReport">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NoteID" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <NavigationProperty Name="NoteDetail" Relationship="Self.FK_SpamReport_NoteDetails" FromRole="SpamReport" ToRole="NoteDetails" />
+    <NavigationProperty Name="User" Relationship="Self.FK_SpamReport_User" FromRole="SpamReport" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Statistic">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="UnderReviewNotes" Type="Int32" Nullable="false" />
+    <Property Name="PublishedNotes" Type="Int32" Nullable="false" />
+    <Property Name="DownloadedNotes" Type="Int32" Nullable="false" />
+    <Property Name="TotalExpensis" Type="Int32" Nullable="false" />
+    <Property Name="TotalEarnings" Type="Int32" Nullable="false" />
+    <Property Name="BuyerRequests" Type="Int32" Nullable="false" />
+    <Property Name="SoldNotes" Type="Int32" Nullable="false" />
+    <Property Name="RejectedNotes" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Statistics_User" FromRole="Statistics" ToRole="User" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserRolesID" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsEmailVerified" Type="Boolean" Nullable="false" />
+    <Property Name="IsDetailsSubmitted" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="BuyerRequests" Relationship="Self.FK_BuyerRequest_Buyer" FromRole="User" ToRole="BuyerRequest" />
+    <NavigationProperty Name="BuyerRequests1" Relationship="Self.FK_BuyerRequest_Seller" FromRole="User" ToRole="BuyerRequest" />
+    <NavigationProperty Name="Feedbacks" Relationship="Self.FK_Feedback_User" FromRole="User" ToRole="Feedback" />
+    <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_User" FromRole="User" ToRole="NoteDetails" />
+    <NavigationProperty Name="SpamReports" Relationship="Self.FK_SpamReport_User" FromRole="User" ToRole="SpamReport" />
+    <NavigationProperty Name="Statistics" Relationship="Self.FK_Statistics_User" FromRole="User" ToRole="Statistics" />
+    <NavigationProperty Name="UserRole" Relationship="Self.FK_User_UserRoles" FromRole="User" ToRole="UserRoles" />
+    <NavigationProperty Name="UserProfileDetails" Relationship="Self.FK_UserProfileDetails_User" FromRole="User" ToRole="UserProfileDetails" />
+  </EntityType>
+  <EntityType Name="UserProfileDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="DOB" Type="DateTime" Precision="3" />
+    <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProfilePicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="University" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="College" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_UserProfileDetails_User" FromRole="UserProfileDetails" ToRole="User" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="UserRolesID" />
+    </Key>
+    <Property Name="UserRolesID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_User_UserRoles" FromRole="UserRoles" ToRole="User" />
+  </EntityType>
+  <EntityType Name="SystemConfiguratioin">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="EmailID1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailID2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DefaultProfilePicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DefaultNotePreview" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FacebookUrl" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <Property Name="TwitterUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LinkedInUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <Association Name="FK_BuyerRequest_Buyer">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="BuyerRequest" Type="Self.BuyerRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="BuyerRequest">
+        <PropertyRef Name="BuyerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BuyerRequest_NoteDetails">
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="1" />
+    <End Role="BuyerRequest" Type="Self.BuyerRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteDetails">
+        <PropertyRef Name="NoteID" />
+      </Principal>
+      <Dependent Role="BuyerRequest">
+        <PropertyRef Name="NoteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BuyerRequest_Seller">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="BuyerRequest" Type="Self.BuyerRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="BuyerRequest">
+        <PropertyRef Name="SellerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_Countries">
+    <End Role="Countries" Type="Self.Country" Multiplicity="0..1" />
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="Country" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Feedback_NoteDetails">
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="1" />
+    <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteDetails">
+        <PropertyRef Name="NoteID" />
+      </Principal>
+      <Dependent Role="Feedback">
+        <PropertyRef Name="NoteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Feedback_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Feedback">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteAttachement_NoteDetails1">
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="1" />
+    <End Role="NoteAttachement" Type="Self.NoteAttachement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteDetails">
+        <PropertyRef Name="NoteID" />
+      </Principal>
+      <Dependent Role="NoteAttachement">
+        <PropertyRef Name="NoteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_NoteCategories">
+    <End Role="NoteCategories" Type="Self.NoteCategory" Multiplicity="1" />
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteCategories">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="Category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_NoteStatus">
+    <End Role="NoteStatus" Type="Self.NoteStatu" Multiplicity="1" />
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteStatus">
+        <PropertyRef Name="NotesStatusID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="NoteStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_NoteTypes">
+    <End Role="NoteTypes" Type="Self.NoteType" Multiplicity="0..1" />
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="NoteType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="ActionedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SpamReport_NoteDetails">
+    <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="1" />
+    <End Role="SpamReport" Type="Self.SpamReport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteDetails">
+        <PropertyRef Name="NoteID" />
+      </Principal>
+      <Dependent Role="SpamReport">
+        <PropertyRef Name="NoteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SpamReport_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="SpamReport" Type="Self.SpamReport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="SpamReport">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Statistics_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Statistics" Type="Self.Statistic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Statistics">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_UserRoles">
+    <End Role="UserRoles" Type="Self.UserRole" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserRoles">
+        <PropertyRef Name="UserRolesID" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="UserRolesID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserProfileDetails_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserProfileDetails" Type="Self.UserProfileDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserProfileDetails">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NoteMarketPlaceEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BuyerRequests" EntityType="Self.BuyerRequest" />
+    <EntitySet Name="ContactUs" EntityType="Self.ContactU" />
+    <EntitySet Name="Countries" EntityType="Self.Country" />
+    <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
+    <EntitySet Name="NoteAttachements" EntityType="Self.NoteAttachement" />
+    <EntitySet Name="NoteCategories" EntityType="Self.NoteCategory" />
+    <EntitySet Name="NoteDetails" EntityType="Self.NoteDetail" />
+    <EntitySet Name="NoteStatus" EntityType="Self.NoteStatu" />
+    <EntitySet Name="NoteTypes" EntityType="Self.NoteType" />
+    <EntitySet Name="SpamReports" EntityType="Self.SpamReport" />
+    <EntitySet Name="Statistics" EntityType="Self.Statistic" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="UserProfileDetails" EntityType="Self.UserProfileDetail" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+    <EntitySet Name="SystemConfiguratioins" EntityType="Self.SystemConfiguratioin" />
+    <AssociationSet Name="FK_BuyerRequest_Buyer" Association="Self.FK_BuyerRequest_Buyer">
+      <End Role="User" EntitySet="Users" />
+      <End Role="BuyerRequest" EntitySet="BuyerRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BuyerRequest_NoteDetails" Association="Self.FK_BuyerRequest_NoteDetails">
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+      <End Role="BuyerRequest" EntitySet="BuyerRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BuyerRequest_Seller" Association="Self.FK_BuyerRequest_Seller">
+      <End Role="User" EntitySet="Users" />
+      <End Role="BuyerRequest" EntitySet="BuyerRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_Countries" Association="Self.FK_NoteDetails_Countries">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Feedback_NoteDetails" Association="Self.FK_Feedback_NoteDetails">
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+      <End Role="Feedback" EntitySet="Feedbacks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Feedback_User" Association="Self.FK_Feedback_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Feedback" EntitySet="Feedbacks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteAttachement_NoteDetails1" Association="Self.FK_NoteAttachement_NoteDetails1">
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+      <End Role="NoteAttachement" EntitySet="NoteAttachements" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_NoteCategories" Association="Self.FK_NoteDetails_NoteCategories">
+      <End Role="NoteCategories" EntitySet="NoteCategories" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_NoteStatus" Association="Self.FK_NoteDetails_NoteStatus">
+      <End Role="NoteStatus" EntitySet="NoteStatus" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_NoteTypes" Association="Self.FK_NoteDetails_NoteTypes">
+      <End Role="NoteTypes" EntitySet="NoteTypes" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_User" Association="Self.FK_NoteDetails_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SpamReport_NoteDetails" Association="Self.FK_SpamReport_NoteDetails">
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+      <End Role="SpamReport" EntitySet="SpamReports" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SpamReport_User" Association="Self.FK_SpamReport_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="SpamReport" EntitySet="SpamReports" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Statistics_User" Association="Self.FK_Statistics_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Statistics" EntitySet="Statistics" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_UserRoles" Association="Self.FK_User_UserRoles">
+      <End Role="UserRoles" EntitySet="UserRoles" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserProfileDetails_User" Association="Self.FK_UserProfileDetails_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserProfileDetails" EntitySet="UserProfileDetails" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,619 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NoteMarketPlaceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.ContactUs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ContactUs">
+    <Key>
+      <PropertyRef Name="FullName" />
+      <PropertyRef Name="EmailAddress" />
+      <PropertyRef Name="Subject" />
+      <PropertyRef Name="Comments" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="FullName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="EmailAddress" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Subject" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Comments" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="CountryCode" Type="varchar" MaxLength="100" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="CTC">
+    <Key>
+      <PropertyRef Name="CTC" />
+    </Key>
+    <Property Name="CTC" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.DownloadedNotes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="DownloadedNotes">
+    <Key>
+      <PropertyRef Name="NoteID" />
+      <PropertyRef Name="UserSeller" />
+      <PropertyRef Name="UserBuyer" />
+      <PropertyRef Name="IsApproved" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="NoteID" Type="int" Nullable="false" />
+    <Property Name="UserSeller" Type="int" Nullable="false" />
+    <Property Name="UserBuyer" Type="int" Nullable="false" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.Feedback' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Feedback">
+    <Key>
+      <PropertyRef Name="NoteID" />
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="Review" />
+      <PropertyRef Name="Comments" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="NoteID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Review" Type="int" Nullable="false" />
+    <Property Name="Comments" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.ManageCTC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ManageCTC">
+    <Key>
+      <PropertyRef Name="CTC" />
+      <PropertyRef Name="Value" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="CTC" Type="int" Nullable="false" />
+    <Property Name="Value" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="CountryCode" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NoteCategories">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NoteDetails">
+    <Key>
+      <PropertyRef Name="NoteID" />
+    </Key>
+    <Property Name="NoteID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="NoteStatus" Type="int" Nullable="false" />
+    <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Category" Type="int" Nullable="false" />
+    <Property Name="BookPicture" Type="varchar(max)" Nullable="false" />
+    <Property Name="NoteAttachment" Type="varchar(max)" Nullable="false" />
+    <Property Name="NoteType" Type="int" />
+    <Property Name="NumberOfPages" Type="int" />
+    <Property Name="NotesDescription" Type="varchar(max)" Nullable="false" />
+    <Property Name="InstitutionName" Type="varchar" MaxLength="200" />
+    <Property Name="Country" Type="int" />
+    <Property Name="Course" Type="varchar" MaxLength="100" />
+    <Property Name="CourseCode" Type="varchar" MaxLength="100" />
+    <Property Name="Professor" Type="varchar" MaxLength="100" />
+    <Property Name="SellPrice" Type="int" Nullable="false" />
+    <Property Name="NotePreview" Type="varchar(max)" />
+    <Property Name="NoteSize" Type="int" />
+    <Property Name="PublishedDate" Type="datetime" />
+    <Property Name="Remark" Type="varchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NoteStatus">
+    <Key>
+      <PropertyRef Name="NotesStatusID" />
+    </Key>
+    <Property Name="NotesStatusID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NoteTypes">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.SpamReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="SpamReport">
+    <Key>
+      <PropertyRef Name="NoteID" />
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="Remark" />
+    </Key>
+    <Property Name="NoteID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Remark" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.Statistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Statistics">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UnderReviewNotes" />
+      <PropertyRef Name="PublishedNotes" />
+      <PropertyRef Name="DownloadedNotes" />
+      <PropertyRef Name="TotalExpensis" />
+      <PropertyRef Name="TotalEarnings" />
+      <PropertyRef Name="BuyerRequests" />
+      <PropertyRef Name="SoldNotes" />
+      <PropertyRef Name="RejectedNotes" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="UnderReviewNotes" Type="int" Nullable="false" />
+    <Property Name="PublishedNotes" Type="int" Nullable="false" />
+    <Property Name="DownloadedNotes" Type="int" Nullable="false" />
+    <Property Name="TotalExpensis" Type="int" Nullable="false" />
+    <Property Name="TotalEarnings" Type="int" Nullable="false" />
+    <Property Name="BuyerRequests" Type="int" Nullable="false" />
+    <Property Name="SoldNotes" Type="int" Nullable="false" />
+    <Property Name="RejectedNotes" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.SystemConfiguratioin' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="SystemConfiguratioin">
+    <Key>
+      <PropertyRef Name="EmailID1" />
+      <PropertyRef Name="PhoneNumber" />
+      <PropertyRef Name="DefaultProfilePicture" />
+      <PropertyRef Name="DefaultNotePreview" />
+      <PropertyRef Name="FacebookUrl" />
+      <PropertyRef Name="TwitterUrl" />
+      <PropertyRef Name="LinkedInUrl" />
+    </Key>
+    <Property Name="EmailID1" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="EmailID2" Type="varchar" MaxLength="100" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="DefaultProfilePicture" Type="varchar(max)" Nullable="false" />
+    <Property Name="DefaultNotePreview" Type="varchar(max)" Nullable="false" />
+    <Property Name="FacebookUrl" Type="varbinary" MaxLength="50" Nullable="false" />
+    <Property Name="TwitterUrl" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LinkedInUrl" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="UserRolesID" Type="int" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="EmailID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsEmailVerified" Type="bit" Nullable="false" />
+    <Property Name="IsDetailsSubmitted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'NoteMarketPlace.dbo.UserProfileDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="UserProfileDetails">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="PhoneNumber" />
+      <PropertyRef Name="Address1" />
+      <PropertyRef Name="City" />
+      <PropertyRef Name="State" />
+      <PropertyRef Name="ZipCode" />
+      <PropertyRef Name="Country" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="DOB" Type="datetime" />
+    <Property Name="Gender" Type="varchar" MaxLength="10" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="ProfilePicture" Type="varchar(max)" />
+    <Property Name="Address1" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Address2" Type="varchar" MaxLength="100" />
+    <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="State" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ZipCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Country" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="University" Type="varchar" MaxLength="100" />
+    <Property Name="College" Type="varchar" MaxLength="100" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserRoles">
+    <Key>
+      <PropertyRef Name="UserRolesID" />
+    </Key>
+    <Property Name="UserRolesID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_DownloadedNotes_NoteDetails">
+    <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="1" />
+    <End Role="DownloadedNotes" Type="Self.DownloadedNotes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteDetails">
+        <PropertyRef Name="NoteID" />
+      </Principal>
+      <Dependent Role="DownloadedNotes">
+        <PropertyRef Name="NoteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Feedback_NoteDetails">
+    <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="1" />
+    <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteDetails">
+        <PropertyRef Name="NoteID" />
+      </Principal>
+      <Dependent Role="Feedback">
+        <PropertyRef Name="NoteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Feedback_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Feedback">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ManageCTC_CTC">
+    <End Role="CTC" Type="Self.CTC" Multiplicity="1" />
+    <End Role="ManageCTC" Type="Self.ManageCTC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CTC">
+        <PropertyRef Name="CTC" />
+      </Principal>
+      <Dependent Role="ManageCTC">
+        <PropertyRef Name="CTC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_Countries">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="Country" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_NoteCategories">
+    <End Role="NoteCategories" Type="Self.NoteCategories" Multiplicity="1" />
+    <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteCategories">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="Category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_NoteStatus">
+    <End Role="NoteStatus" Type="Self.NoteStatus" Multiplicity="1" />
+    <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteStatus">
+        <PropertyRef Name="NotesStatusID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="NoteStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NoteDetails_NoteTypes">
+    <End Role="NoteTypes" Type="Self.NoteTypes" Multiplicity="0..1" />
+    <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="NoteDetails">
+        <PropertyRef Name="NoteType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SpamReport_NoteDetails">
+    <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="1" />
+    <End Role="SpamReport" Type="Self.SpamReport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NoteDetails">
+        <PropertyRef Name="NoteID" />
+      </Principal>
+      <Dependent Role="SpamReport">
+        <PropertyRef Name="NoteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SpamReport_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="SpamReport" Type="Self.SpamReport" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="SpamReport">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Statistics_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Statistics" Type="Self.Statistics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Statistics">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_User">
+    <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserRoles">
+        <PropertyRef Name="UserRolesID" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NoteMarketPlaceModelStoreContainer">
+    <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CTC" EntityType="Self.CTC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NoteCategories" EntityType="Self.NoteCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NoteDetails" EntityType="Self.NoteDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NoteStatus" EntityType="Self.NoteStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NoteTypes" EntityType="Self.NoteTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ContactUs" EntityType="Self.ContactUs" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ContactUs].[FullName] AS [FullName], 
+    [ContactUs].[EmailAddress] AS [EmailAddress], 
+    [ContactUs].[Subject] AS [Subject], 
+    [ContactUs].[Comments] AS [Comments], 
+    [ContactUs].[CreatedDate] AS [CreatedDate], 
+    [ContactUs].[CreatedBy] AS [CreatedBy], 
+    [ContactUs].[ModifiedDate] AS [ModifiedDate], 
+    [ContactUs].[ModifiedBy] AS [ModifiedBy], 
+    [ContactUs].[IsActive] AS [IsActive]
+    FROM [dbo].[ContactUs] AS [ContactUs]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="DownloadedNotes" EntityType="Self.DownloadedNotes" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [DownloadedNotes].[NoteID] AS [NoteID], 
+    [DownloadedNotes].[UserSeller] AS [UserSeller], 
+    [DownloadedNotes].[UserBuyer] AS [UserBuyer], 
+    [DownloadedNotes].[IsApproved] AS [IsApproved], 
+    [DownloadedNotes].[CreatedDate] AS [CreatedDate], 
+    [DownloadedNotes].[CreatedBy] AS [CreatedBy], 
+    [DownloadedNotes].[ModifiedDate] AS [ModifiedDate], 
+    [DownloadedNotes].[ModifiedBy] AS [ModifiedBy], 
+    [DownloadedNotes].[IsActive] AS [IsActive]
+    FROM [dbo].[DownloadedNotes] AS [DownloadedNotes]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Feedback" EntityType="Self.Feedback" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Feedback].[NoteID] AS [NoteID], 
+    [Feedback].[UserID] AS [UserID], 
+    [Feedback].[Review] AS [Review], 
+    [Feedback].[Comments] AS [Comments], 
+    [Feedback].[CreatedDate] AS [CreatedDate], 
+    [Feedback].[CreatedBy] AS [CreatedBy], 
+    [Feedback].[ModifiedDate] AS [ModifiedDate], 
+    [Feedback].[ModifiedBy] AS [ModifiedBy], 
+    [Feedback].[IsActive] AS [IsActive]
+    FROM [dbo].[Feedback] AS [Feedback]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ManageCTC" EntityType="Self.ManageCTC" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ManageCTC].[CTC] AS [CTC], 
+    [ManageCTC].[Value] AS [Value], 
+    [ManageCTC].[Description] AS [Description], 
+    [ManageCTC].[CountryCode] AS [CountryCode], 
+    [ManageCTC].[CreatedDate] AS [CreatedDate], 
+    [ManageCTC].[CreatedBy] AS [CreatedBy], 
+    [ManageCTC].[ModifiedDate] AS [ModifiedDate], 
+    [ManageCTC].[ModifiedBy] AS [ModifiedBy], 
+    [ManageCTC].[IsActive] AS [IsActive]
+    FROM [dbo].[ManageCTC] AS [ManageCTC]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="SpamReport" EntityType="Self.SpamReport" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SpamReport].[NoteID] AS [NoteID], 
+    [SpamReport].[UserID] AS [UserID], 
+    [SpamReport].[Remark] AS [Remark], 
+    [SpamReport].[CreatedDate] AS [CreatedDate], 
+    [SpamReport].[CreatedBy] AS [CreatedBy], 
+    [SpamReport].[ModifiedDate] AS [ModifiedDate], 
+    [SpamReport].[ModifiedBy] AS [ModifiedBy]
+    FROM [dbo].[SpamReport] AS [SpamReport]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Statistics" EntityType="Self.Statistics" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Statistics].[UserID] AS [UserID], 
+    [Statistics].[UnderReviewNotes] AS [UnderReviewNotes], 
+    [Statistics].[PublishedNotes] AS [PublishedNotes], 
+    [Statistics].[DownloadedNotes] AS [DownloadedNotes], 
+    [Statistics].[TotalExpensis] AS [TotalExpensis], 
+    [Statistics].[TotalEarnings] AS [TotalEarnings], 
+    [Statistics].[BuyerRequests] AS [BuyerRequests], 
+    [Statistics].[SoldNotes] AS [SoldNotes], 
+    [Statistics].[RejectedNotes] AS [RejectedNotes]
+    FROM [dbo].[Statistics] AS [Statistics]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="SystemConfiguratioin" EntityType="Self.SystemConfiguratioin" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SystemConfiguratioin].[EmailID1] AS [EmailID1], 
+    [SystemConfiguratioin].[EmailID2] AS [EmailID2], 
+    [SystemConfiguratioin].[PhoneNumber] AS [PhoneNumber], 
+    [SystemConfiguratioin].[DefaultProfilePicture] AS [DefaultProfilePicture], 
+    [SystemConfiguratioin].[DefaultNotePreview] AS [DefaultNotePreview], 
+    [SystemConfiguratioin].[FacebookUrl] AS [FacebookUrl], 
+    [SystemConfiguratioin].[TwitterUrl] AS [TwitterUrl], 
+    [SystemConfiguratioin].[LinkedInUrl] AS [LinkedInUrl], 
+    [SystemConfiguratioin].[CreatedDate] AS [CreatedDate], 
+    [SystemConfiguratioin].[CreatedBy] AS [CreatedBy], 
+    [SystemConfiguratioin].[ModifiedDate] AS [ModifiedDate], 
+    [SystemConfiguratioin].[ModifiedBy] AS [ModifiedBy]
+    FROM [dbo].[SystemConfiguratioin] AS [SystemConfiguratioin]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="UserProfileDetails" EntityType="Self.UserProfileDetails" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [UserProfileDetails].[UserID] AS [UserID], 
+    [UserProfileDetails].[DOB] AS [DOB], 
+    [UserProfileDetails].[Gender] AS [Gender], 
+    [UserProfileDetails].[PhoneNumber] AS [PhoneNumber], 
+    [UserProfileDetails].[ProfilePicture] AS [ProfilePicture], 
+    [UserProfileDetails].[Address1] AS [Address1], 
+    [UserProfileDetails].[Address2] AS [Address2], 
+    [UserProfileDetails].[City] AS [City], 
+    [UserProfileDetails].[State] AS [State], 
+    [UserProfileDetails].[ZipCode] AS [ZipCode], 
+    [UserProfileDetails].[Country] AS [Country], 
+    [UserProfileDetails].[University] AS [University], 
+    [UserProfileDetails].[College] AS [College], 
+    [UserProfileDetails].[CreatedDate] AS [CreatedDate], 
+    [UserProfileDetails].[CreatedBy] AS [CreatedBy], 
+    [UserProfileDetails].[ModifiedDate] AS [ModifiedDate], 
+    [UserProfileDetails].[ModifiedBy] AS [ModifiedBy], 
+    [UserProfileDetails].[IsActive] AS [IsActive]
+    FROM [dbo].[UserProfileDetails] AS [UserProfileDetails]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_DownloadedNotes_NoteDetails" Association="Self.FK_DownloadedNotes_NoteDetails">
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+      <End Role="DownloadedNotes" EntitySet="DownloadedNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Feedback_NoteDetails" Association="Self.FK_Feedback_NoteDetails">
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+      <End Role="Feedback" EntitySet="Feedback" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Feedback_User" Association="Self.FK_Feedback_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Feedback" EntitySet="Feedback" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ManageCTC_CTC" Association="Self.FK_ManageCTC_CTC">
+      <End Role="CTC" EntitySet="CTC" />
+      <End Role="ManageCTC" EntitySet="ManageCTC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_Countries" Association="Self.FK_NoteDetails_Countries">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_NoteCategories" Association="Self.FK_NoteDetails_NoteCategories">
+      <End Role="NoteCategories" EntitySet="NoteCategories" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_NoteStatus" Association="Self.FK_NoteDetails_NoteStatus">
+      <End Role="NoteStatus" EntitySet="NoteStatus" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NoteDetails_NoteTypes" Association="Self.FK_NoteDetails_NoteTypes">
+      <End Role="NoteTypes" EntitySet="NoteTypes" />
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SpamReport_NoteDetails" Association="Self.FK_SpamReport_NoteDetails">
+      <End Role="NoteDetails" EntitySet="NoteDetails" />
+      <End Role="SpamReport" EntitySet="SpamReport" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SpamReport_User" Association="Self.FK_SpamReport_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="SpamReport" EntitySet="SpamReport" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Statistics_User" Association="Self.FK_Statistics_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Statistics" EntitySet="Statistics" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_User" Association="Self.FK_User_User">
+      <End Role="UserRoles" EntitySet="UserRoles" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

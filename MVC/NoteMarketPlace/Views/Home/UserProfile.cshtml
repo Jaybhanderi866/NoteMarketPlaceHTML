@@ -1,0 +1,334 @@
+﻿@model NoteMarketPlace.Models.UserProfileDetail
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/Register.cshtml";
+}
+
+<!-- User Profile Page -->
+<!-- Upper Section -->
+<section>
+    <div id="userprofile-img">
+        <div class="centerh2">
+
+            <h2>User Profile</h2>
+
+        </div>
+    </div>
+</section>
+
+<form class="user-details-form" method="post" enctype="multipart/form-data">
+
+    <!-- Pesronal Detail -->
+    <section id="personal-details" class="user-profile content-box-md">
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="heading">
+                            <h3>Basic Profile Details</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- First Name -->
+                                <div class="form-group">
+                                    <label class="mylabel">First Name*</label>
+                                    @*<input type="text" class="form-control InputEmail1" placeholder="Enter your First Name">*@
+                                    @Html.TextBoxFor(m => m.User.FirstName, new { @class = "form-control InputEmail1", @placeholder = "Enter your First Name" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.User.FirstName)</div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Last Name -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">Last Name*</label>
+                                    @*<input type="text" class="form-control InputEmail1" aria-describedby="emailHelp" placeholder="Enter your Last Name">*@
+                                    @Html.TextBoxFor(m => m.User.LastName, new { @class = "form-control InputEmail1", @placeholder = "Enter your Last Name" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.User.LastName)</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Email -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">Email*</label>
+                                    @*<input type="email" class="form-control InputEmail1" aria-describedby="emailHelp" placeholder="Enter your Email Address">*@
+                                    @Html.TextBoxFor(m => m.User.EmailID, new { @class = "form-control InputEmail1", @readonly = "readonly" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.User.EmailID)</div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Date Of Birth -->
+                                <div class="form-group">
+                                    <label class="mylabel">Date Of Birth</label>
+
+                                    <!-- Icon -->
+                                    <div class="wrapper">
+                                        @*<input type="date" class="form-control InputEmail1" placeholder="Enter your birth of date">*@
+                                        @Html.TextBoxFor(m => m.DOB, new { @class = "form-control InputEmail1", @placeholder = "Enter your birth of date", @type = "date" })
+                                        <img src="/Content/img/user-profile/calendar.png" alt="show">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Gender -->
+                                <div class="form-group">
+                                    <label class="mylabel">Gender</label>
+                                    <select name="Gender" class="form-control inputselect">
+                                        @{ List<String> Gender = new List<string>() { "Select your gender", "Male", "Female" };
+                                            foreach (var item in Gender)
+                                            {
+                                                if (Request.QueryString["Gender"] == item)
+                                                {
+                                                    <option selected value="@item">@item</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item">@item</option>
+                                                }
+                                            }
+
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+
+                                <!-- Phone Number -->
+                                <div class="form-group">
+                                    <label class="mylabel">Phone Number *</label>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5 col-3 col-xl-3 col-lg-4  nopadding">
+                                                <div class="marginright">
+
+                                                    <select name="CountryCode" class="form-control inputselect">
+                                                        @{
+                                                            var list = ViewBag.country as IEnumerable<NoteMarketPlace.Models.Country>;
+                                                            foreach (var item in list)
+                                                            {
+                                                                if (@Request.QueryString["CountryCode"] == item.CountryCode)
+                                                                {
+                                                                    <option selected value="@item.CountryCode">+@item.CountryCode</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.CountryCode">+@item.CountryCode</option>
+                                                                }
+
+                                                            }
+
+                                                        }
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7 col-sm-7 col-9 col-xl-9 col-lg-8 nopadding">
+
+                                                @*<input type="email" class="form-control InputEmail1" placeholder="Enter your phone number">*@
+                                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control InputEmail1", @placeholder = "Enter your phone number" })
+                                                <div class="text-danger">@Html.ValidationMessageFor(m => m.PhoneNumber)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="upload-profile-pic">
+                                        <label class="mylabel" for="InputEmail1">Profile Picture</label>
+                                        <input type="file" name="file" class="form-control inputemail1" aria-describedby="emailhelp" onchange="preview()">
+                                        <div class="uploadmypic text-center"><img id="frame" class="img-fluid" style=" height:100px; width:50%; object-fit: cover; " /></div>
+                                        @*@Html.EditorFor(model => model.ProfilePicture , new { htmlAttributes = new { @class = "form-control InputEmail1", @type = "file" } })*@
+                                        <div class="uploadmypic text-center" id="img">
+                                            <img class="img-fluid" src="/Content/img/user-profile/upload.png">
+                                            <h6>Upload a picture</h6>
+                                        </div>
+
+                                    </div>
+                                    <div class="text-danger">@ViewBag.fileMsg</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <script type="text/javascript">
+        function preview() {
+            frame.src = URL.createObjectURL(event.target.files[0]);
+            document.getElementById("img").style.display = "none";
+        }
+    </script>
+    <!-- User Detail Ends-->
+    <!-- Address Detail Section -->
+    <section id="Address-details" class="user-profile content-box-md">
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="head">
+                            <h3>Address Details</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Address Line 1 -->
+                                <div class="form-group">
+                                    <label class="mylabel">Address Line 1 *</label>
+                                    @*<input type="text" class="form-control InputEmail1" placeholder="Enter your address">*@
+                                    @Html.TextBoxFor(m => m.Address1, new { @class = "form-control InputEmail1", @placeholder = "Enter your address", @maxLenght = 100 })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.Address1)</div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Address Line 2 -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">Address Line 2 </label>
+                                    @*<input type="text" class="form-control InputEmail1" aria-describedby="emailHelp" placeholder="Enter your address">*@
+                                    @Html.TextBoxFor(m => m.Address2, new { @class = "form-control InputEmail1", @placeholder = "Enter your address", @maxLenght = 100 })
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- City -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">City *</label>
+                                    @*<input type="email" class="form-control InputEmail1" aria-describedby="emailHelp" placeholder="Enter your city">*@
+                                    @Html.TextBoxFor(m => m.City, new { @class = "form-control InputEmail1", @placeholder = "Enter your city" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.City)</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- State -->
+                                <div class="form-group">
+                                    <label class="mylabel">State *</label>
+                                    @*<input type="email" class="form-control InputEmail1" placeholder="Enter your State">*@
+                                    @Html.TextBoxFor(m => m.State, new { @class = "form-control InputEmail1", @placeholder = "Enter your state" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.State)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <!-- ZipCode -->
+                                <div class="form-group">
+                                    <label class="mylabel">ZipCode *</label>
+                                    @*<input type="email" class="form-control InputEmail1" placeholder="Enter your zipcode">*@
+                                    @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control InputEmail1", @placeholder = "Enter your zipcode" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.ZipCode)</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+
+                                <!-- Country -->
+                                <div class="form-group">
+                                    <label class="mylabel">Country *</label>
+                                    <select name="Country" class="form-control inputselect">
+                                        <option value="">Select your country</option>
+                                        @{
+                                            foreach (var item in list)
+                                            {
+                                                <option value="@item.Name">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.Country)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--  Address Detail Ends -->
+    <!-- Academic Detail Section -->
+    <section id="study-details" class="user-profile content-box-md">
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="head">
+                            <h3>University and College Details</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- University -->
+                                <div class="form-group">
+                                    <label class="mylabel">University</label>
+                                    @*<input type="text" class="form-control InputEmail1" placeholder="Enter your University">*@
+                                    @Html.TextBoxFor(m => m.University, new { @class = "form-control InputEmail1", @placeholder = "Enter your university" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.University)</div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <!-- College -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">College</label>
+                                    @*<input type="text" class="form-control InputEmail1" aria-describedby="emailHelp" placeholder="Enter your College">*@
+                                    @Html.TextBoxFor(m => m.College, new { @class = "form-control InputEmail1", @placeholder = "Enter your college" })
+                                    <div class="text-danger">@Html.ValidationMessageFor(m => m.College)</div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Login Button -->
+                <div class="row">
+                    <div class="col-md-2 col-sm-12">
+                        <button type="submit" class="btn text-uppercase text-center" id="mybtn" onclick=""><b>submit</b></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--Academic Detail End-->
+</form>
