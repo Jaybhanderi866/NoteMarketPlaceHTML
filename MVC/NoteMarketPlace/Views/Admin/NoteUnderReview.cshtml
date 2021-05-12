@@ -1,0 +1,220 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@using NoteMarketPlace.Models
+
+@model IPagedList<NoteMarketPlace.Models.NoteDetail>
+
+@{
+    ViewBag.Title = "Note Under Review";
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+@{
+    NoteMarketPlaceEntities db = new NoteMarketPlaceEntities();
+}
+
+<!-- Notes Under Review -->
+<section id="dashboard-publish" class="mydownload-margin">
+    <div class="container" >
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <h3>Notes Under Review</h3>
+            </div>
+        </div>
+        <form>
+            <div class="row top-table">
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" >
+                    <div class="div-seller text-center">
+                        <p class="seller-text text-left"><span>Seller</span></p>
+                        <select name="sellerName" class="form-control inputselect seller-dd" onchange="submit()">
+                            <option value="">Select Name</option>
+                            @foreach (var item in ViewBag.sellerName)
+                            {
+                                if (Request.QueryString["sellerName"] == item)
+                                {
+                                    <option selected value="@item">@item</option>
+                                }
+                                else
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                    <div class="row justify-content-end">
+                        <div class="wrapper seller-mb">
+                            <img src="/Content/img/Dashboard/search.jpg" class="searchimage doup">
+                            <input type="text" name="search" value="@Request.QueryString["search"]" class="form-control search-bar InputEmail1" placeholder="Search">
+                            <input name="sortBy" value="@Request.QueryString["sortBy"]" hidden />
+                        </div>
+                        <div class="btn-merge seller-mb">
+                            <button type="submit" class="btn text-uppercase text-center" id="mybtn"><b>Search</b></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row" style="margin-left: -3%">
+            <div class="col-md-12">
+                <div class="grid-table table-responsive-xl">
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="align-middle text-center" style="cursor:text">SR NO.</th>
+                                <th scope="col" class="align-middle" onclick="@("window.location.href='" + @Url.Action("NoteUnderReview", "Admin", new { sortBy = "title", search = Request.QueryString["search"], page = Request.QueryString["page"] }) + "'");">NOTE TITLE</th>
+                                <th scope="col" class="align-middle" onclick="@("window.location.href='" + @Url.Action("NoteUnderReview", "Admin", new { sortBy = "category", search = Request.QueryString["search"], page = Request.QueryString["page"] }) + "'");">CATEGORY</th>
+                                <th scope="col" class="align-middle" onclick="@("window.location.href='" + @Url.Action("NoteUnderReview", "Admin", new { sortBy = "seller", search = Request.QueryString["search"], page = Request.QueryString["page"] }) + "'");">SELLER</th>
+                                <th scope="col" class="align-middle" style="cursor:text"></th>
+                                <th scope="col" class="align-middle" onclick="@("window.location.href='" + @Url.Action("NoteUnderReview", "Admin", new { sortBy = "date", search = Request.QueryString["search"], page = Request.QueryString["page"] }) + "'");">DATE ADDED</th>
+                                <th scope="col" class="align-middle text-center" onclick="@("window.location.href='" + @Url.Action("NoteUnderReview", "Admin", new { sortBy = "status", search = Request.QueryString["search"], page = Request.QueryString["page"] }) + "'");">STATUS</th>
+                                <th scope="col" class="align-middle" style="cursor:text">ACTION</th>
+                                <th scope="col" class="align-middle" style="cursor:text"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() == 0)
+                            {
+                                <tr><td colspan="9" class="align-middle">No Record Found!</td></tr>
+                            }
+                            @{
+                                int i = -1, a;
+                                if (Request.QueryString["page"] == null || Request.QueryString["page"].AsInt() == 1)
+                                {
+                                    a = 1;
+                                }
+                                else
+                                {
+                                    a = (Request.QueryString["page"].AsInt() - 1) * 5 + 1;
+                                }
+                                foreach (var item in Model)
+                                {
+                                    i++;
+                                    <tr>
+                                        <td class="align-middle text-center">@(a + i)</td>
+                                        <td class="align-middle getpurple">@item.Title</td>
+                                        <td class="align-middle">@item.NoteCategory.Name</td>
+                                        <td class="align-middle">@item.Publisher</td>
+                                        <td class="align-middle"><a href="@Url.Action("MemberDetail","Admin",new { UserId = item.UserID.ToString() } )"><img src="/Content/img/Dashboard/eye.png"></a></td>
+                                        <td class="align-middle">@item.CreatedDate.Value.ToString("dd-MM-yyyy,hh:mm")</td>
+                                        <td class="align-middle">@item.NoteStatu.Name</td>
+                                        <td class="align-middle">
+                                            <button class="btn text-center review-btn btn-green" onclick="@("window.location.href='" + @Url.Action("NoteUnderReview", "Admin", new { buttenValue = "approve", noteId = item.NoteID.ToString(), search = Request.QueryString["search"], sortBy = "price", page = Request.QueryString["page"] }) + "'");">Approve</button>
+                                            <button class="btn text-center review-btn btn-red" data-toggle="modal" data-target="#exampleModal" onclick="reject(@item.NoteID,'@item.Title')">Reject</button>
+                                            @if (item.NoteStatus == 2)
+                                            {
+                                                <button class="btn text-center review-btn btn-gray" style="height:70px" onclick="@("window.location.href='" + @Url.Action("NoteUnderReview", "Admin", new { buttenValue = "inreview", noteId = item.NoteID.ToString(), search = Request.QueryString["search"], sortBy = "price", page = Request.QueryString["page"] }) + "'");">
+                                                    Submitted<br/>For Review
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn text-center review-btn btn-gray" disabled>InReview</button>
+                                            }
+                                        </td>
+                                        <td class="align-middle" style="cursor:pointer">
+                                            <div class="dropdown" style="cursor:pointer">
+                                                <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v dowhite"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item" href="@Url.Action("NoteDetail", "Admin", new { noteId = item.NoteID.ToString() })">View More Details</a>
+                                                    @{ NoteAttachement notefile = db.NoteAttachements.SingleOrDefault(m => m.NoteID == item.NoteID); }
+                                                    <a class="dropdown-item" href="@Url.Action("DownloadFile", "Home", new { filename = notefile.FileName })">Download Notes</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        
+                                        
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<!-- Notes Under Review ends -->
+<script>
+
+    function reject(id, title) {
+        document.getElementById("rejectedNoteID").setAttribute("value", id);
+        var x = document.getElementsByClassName("noteTitle");
+        x[0].innerHTML = title;
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade modal-download" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <a class="close" data-dismiss="modal" aria-label="Close">
+                            <img src="~/content/img/Notes Details/close.png">
+                        </a>
+                    </div>
+                    <div class="model-data">
+
+                        <div class="model-head text-left">
+                            <h2 class="noteTitle">Note Title</h2>
+                        </div>
+                        <div class="middel-content text-left">
+
+                            <form method="post">
+
+                                <input name="noteID" id="rejectedNoteID" hidden />
+                                <input name="buttenValue" value="reject" hidden />
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="textarea-input">
+                                                <label class="mylabel" for="InputEmail1">Remark </label>
+                                                @Html.TextArea("Remark", new { @placeholder = "Remark...", @class = "form-control InputEmail1" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end ">
+                                    <div class="align-middle ">
+                                         <button type="submit" class="btn text-center review-btn btn-red">Reject</button>
+                                    </div>
+                                    <div class="align-middle">
+                                         <button type="button" data-dismiss="modal" class="btn text-center review-btn btn-gray">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Pagination -->
+@Html.PagedListPager(Model, page => Url.Action("NoteUnderReview", new { page, sortBy = Request.QueryString["sortBy"], search = Request.QueryString["search"] }), new PagedListRenderOptions()
+{
+       Display = PagedListDisplayMode.IfNeeded,
+       ContainerDivClasses = null,
+       LiElementClasses = new string[] { "page-item" },
+       UlElementClasses = new string[] { "pagination justify-content-center" },
+       LinkToNextPageFormat = "<i class='fa fa-chevron-right'></i>",
+       LinkToPreviousPageFormat = "<i class='fa fa-chevron-left'></i>",
+       MaximumPageNumbersToDisplay = 5,
+       DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+       DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+       DisplayLinkToLastPage = PagedListDisplayMode.Never
+})

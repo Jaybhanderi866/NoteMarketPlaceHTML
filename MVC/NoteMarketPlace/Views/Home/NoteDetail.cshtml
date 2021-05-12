@@ -3,12 +3,12 @@
 
 @if (ViewBag.isRegister)
 {
-    ViewBag.Title = "Home";
+    ViewBag.Title = "Note Details";
     Layout = "~/Views/Shared/Register.cshtml";
 }
 else
 {
-    ViewBag.Title = "Home";
+    ViewBag.Title = "Note Details";
     Layout = "~/Views/Shared/WithoutRegister.cshtml";
 }
 @{
@@ -87,7 +87,7 @@ else
                                                                     <div class="middel-content text-left">
                                                                         <h3>Dear @ViewBag.username,</h3>
                                                                         <p class="para-1">As this is paid notes-you need to pay to seller @ViewBag.sellername offline.We will send him an email that you want to download this note.He may contact you further for payment process completion.</p>
-                                                                        <p class="para-2">In Case, you have urgency,<br>Please contact us on +919904356474.</p>
+                                                                        <p class="para-2">In Case, you have Imurgency,<br>Please contact us on +919904356474.</p>
                                                                         <p class="para-3">Once he recevies the payment and acknowledge us-Seleted notes you can see over my downloads tab for download.</p>
                                                                         <p class="para-4">Have a good day.</p>
                                                                     </div>
@@ -231,7 +231,7 @@ else
                 </div>
                 <div id="Iframe-Cicis-Menu-To-Go" class="set-margin-cicis-menu-to-go set-padding-cicis-menu-to-go set-border-cicis-menu-to-go set-box-shadow-cicis-menu-to-go center-block-horiz">
                     <div class="responsive-wrapper responsive-wrapper-padding-bottom-90pct" style="-webkit-overflow-scrolling: touch; overflow: auto;">
-                        <iframe src="@preview">
+                        <iframe src="@preview"  class="responsive-iframe" title="description">
                             <p style="font-size: 110%;">
                                 <em>
                                     <strong>ERROR: </strong>

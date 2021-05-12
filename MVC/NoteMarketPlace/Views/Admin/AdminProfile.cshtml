@@ -1,0 +1,158 @@
+﻿@model NoteMarketPlace.Models.User
+
+@{
+    ViewBag.Title = "Admin Profile";
+    Layout = "~/Views/Shared/Admin.cshtml";
+}
+
+<!-- My Profile -->
+<form class="user-details-form" method="post" enctype="multipart/form-data">
+
+    <!-- Pesronal Detail -->
+    <section id="personal-details" class="user-profile content-box-md">
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="heading">
+                            <h3>My Profile</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- First Name -->
+                                <div class="form-group">
+                                    <label class="mylabel">First Name*</label>
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control InputEmail1", @placeholder = "Enter your First Name" })
+                                    @Html.ValidationMessageFor(m => m.FirstName)
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Last Name -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">Last Name*</label>
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control InputEmail1", @placeholder = "Enter your Last Name" })
+                                    @Html.ValidationMessageFor(m => m.LastName)
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Email -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">Email*</label>
+                                    @Html.TextBoxFor(m => m.EmailID, new { @type = "email", @class = "form-control InputEmail1", @placeholder = "Enter your Email Address", @readonly = true })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <!-- Date Of Birth -->
+                                <div class="form-group">
+                                    <label class="mylabel" for="InputEmail1">Secondary Email</label>
+                                    @Html.TextBoxFor(m => m.SecondaryEmailID, new { @type = "email", @class = "form-control InputEmail1", @placeholder = "Enter your Email Address" })
+                                    @Html.ValidationMessageFor(m => m.SecondaryEmailID)
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6">
+
+                                <!-- Phone Number -->
+                                <div class="form-group">
+                                    <label class="mylabel">Phone Number</label>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5 col-3 col-xl-3 col-lg-4  nopadding">
+                                                <div class="marginright">
+
+                                                    <select name="CountryCode" class="form-control inputselect">
+                                                        @{
+                                                            var list = ViewBag.country as IEnumerable<NoteMarketPlace.Models.Country>;
+                                                            foreach (var item in list)
+                                                            {
+                                                                if (@Request.QueryString["CountryCode"] == item.CountryCode)
+                                                                {
+                                                                    <option selected value="@item.CountryCode">+@item.CountryCode</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.CountryCode">+@item.CountryCode</option>
+                                                                }
+
+                                                            }
+
+                                                        }
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7 col-sm-7 col-9 col-xl-9 col-lg-8 nopadding">
+                                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control InputEmail1", @placeholder = "Enter your phone number" })
+                                                @Html.ValidationMessageFor(m => m.PhoneNumber)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="upload-profile-pic">
+                                        <label class="mylabel" for="InputEmail1">Profile Picture</label>
+                                        @if (Model.AdminProfile != null)
+                                        {
+                                            <div class="uploadmypic text-center"><img src="~/Uploads/ProfilePicture/@Model.AdminProfile" class="img-fluid" style=" height:100px; width:50%; object-fit: cover; " /></div>
+                                            @Html.TextBoxFor(m => m.AdminProfileFile, new { type = "file", name = "AdminProfileFile", @class = "form-control inputemail1", @onchange = "preview()" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.AdminProfileFile, new { type = "file", name = "AdminProfileFile", @class = "form-control inputemail1", @onchange = "preview()" })
+                                            <div class="uploadmypic text-center"><img id="frame" class="img-fluid" style=" height:100px; width:50%; object-fit: cover; " /></div>
+                                            <div class="uploadmypic text-center" id="img">
+                                                <img class="img-fluid" src="/Content/Admin/img/user-profile/upload.png">
+                                                <h6>Upload a picture</h6>
+
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-3">
+                                <button type="submit" class="btn text-uppercase text-center" id="mybtn"><b>submit</b></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <script type="text/javascript">
+        function preview() {
+            frame.src = URL.createObjectURL(event.target.files[0]);
+            document.getElementById("img").style.display = "none";
+        }
+    </script>
+</form>
+<!-- My Profile Ends -->

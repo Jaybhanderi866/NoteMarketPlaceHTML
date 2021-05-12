@@ -23,6 +23,7 @@ namespace NoteMarketPlace.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Addedby { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

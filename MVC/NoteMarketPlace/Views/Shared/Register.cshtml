@@ -129,11 +129,31 @@
                             <li class="nav-item">
                                 @if (ViewBag.profilePicture != null)
                                 {
-                                    <img src="~/Uploads/ProfilePicture/@ViewBag.profilePicture" class="img-fluid rounded-circle" alt="User">
+                                    <div class="userprofile-user-icon dropdown">
+                                        <a role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="~/Uploads/ProfilePicture/@ViewBag.profilePicture" class="img-fluid rounded-circle" alt="User"></a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                            @Html.ActionLink("My Profile", "UserProfile", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("My Downloads", "DownloadNote", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("My Sold Notes", "SoldNote", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("My Rejected Notes", "RejectedNote", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Change Password", "ChangePassword", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("LOGOUT", "Logout", "Home", new { @class = "dropdown-item givecolor" })
+                                        </div>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img src="~/Content/img/user-profile/team-1.jpg" class="img-fluid rounded-circle" alt="User">
+                                    <div class="userprofile-user-icon dropdown">
+                                        <a role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="~/Content/img/user-profile/team-1.jpg" class="img-fluid rounded-circle" alt="User"></a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                            @Html.ActionLink("My Profile", "UserProfile", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("My Downloads", "DownloadNote", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("My Sold Notes", "SoldNote", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("My Rejected Notes", "RejectedNote", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Change Password", "ChangePassword", "Home", null, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("LOGOUT", "Logout", "Home", new { @class = "dropdown-item givecolor" })
+                                        </div>
+                                    </div>
                                 }
                             </li>
                             <li>

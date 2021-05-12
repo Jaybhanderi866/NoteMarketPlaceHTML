@@ -11,6 +11,7 @@
     <Property Name="NoteTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Price" Type="Int32" Nullable="false" />
     <Property Name="BuyerEmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="SellType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Status" Type="Boolean" />
     <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
@@ -47,6 +48,7 @@
     <Property Name="CreatedBy" Type="Int32" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActice" Type="Boolean" />
     <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_Countries" FromRole="Countries" ToRole="NoteDetails" />
   </EntityType>
   <EntityType Name="Feedback">
@@ -175,24 +177,28 @@
     <Property Name="CreatedBy" Type="Int32" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" />
     <NavigationProperty Name="NoteDetail" Relationship="Self.FK_SpamReport_NoteDetails" FromRole="SpamReport" ToRole="NoteDetails" />
     <NavigationProperty Name="User" Relationship="Self.FK_SpamReport_User" FromRole="SpamReport" ToRole="User" />
   </EntityType>
-  <EntityType Name="Statistic">
+  <EntityType Name="SystemConfiguration">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserID" Type="Int32" Nullable="false" />
-    <Property Name="UnderReviewNotes" Type="Int32" Nullable="false" />
-    <Property Name="PublishedNotes" Type="Int32" Nullable="false" />
-    <Property Name="DownloadedNotes" Type="Int32" Nullable="false" />
-    <Property Name="TotalExpensis" Type="Int32" Nullable="false" />
-    <Property Name="TotalEarnings" Type="Int32" Nullable="false" />
-    <Property Name="BuyerRequests" Type="Int32" Nullable="false" />
-    <Property Name="SoldNotes" Type="Int32" Nullable="false" />
-    <Property Name="RejectedNotes" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="User" Relationship="Self.FK_Statistics_User" FromRole="Statistics" ToRole="User" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="EmailID1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailID2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DefaultProfilePicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="DefaultNotePreview" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="FacebookUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="TwitterUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="LinkedInUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -205,6 +211,9 @@
     <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="IsEmailVerified" Type="Boolean" Nullable="false" />
+    <Property Name="SecondaryEmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="AdminProfile" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="IsDetailsSubmitted" Type="Boolean" Nullable="false" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedBy" Type="Int32" />
@@ -216,7 +225,6 @@
     <NavigationProperty Name="Feedbacks" Relationship="Self.FK_Feedback_User" FromRole="User" ToRole="Feedback" />
     <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_User" FromRole="User" ToRole="NoteDetails" />
     <NavigationProperty Name="SpamReports" Relationship="Self.FK_SpamReport_User" FromRole="User" ToRole="SpamReport" />
-    <NavigationProperty Name="Statistics" Relationship="Self.FK_Statistics_User" FromRole="User" ToRole="Statistics" />
     <NavigationProperty Name="UserRole" Relationship="Self.FK_User_UserRoles" FromRole="User" ToRole="UserRoles" />
     <NavigationProperty Name="UserProfileDetails" Relationship="Self.FK_UserProfileDetails_User" FromRole="User" ToRole="UserProfileDetails" />
   </EntityType>
@@ -259,24 +267,6 @@
     <Property Name="ModifiedBy" Type="Int32" />
     <Property Name="IsActive" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Users" Relationship="Self.FK_User_UserRoles" FromRole="UserRoles" ToRole="User" />
-  </EntityType>
-  <EntityType Name="SystemConfiguratioin">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="EmailID1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="EmailID2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="DefaultProfilePicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="DefaultNotePreview" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="FacebookUrl" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
-    <Property Name="TwitterUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="LinkedInUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedBy" Type="Int32" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedBy" Type="Int32" />
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
   </EntityType>
   <Association Name="FK_BuyerRequest_Buyer">
     <End Role="User" Type="Self.User" Multiplicity="1" />
@@ -399,14 +389,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_NoteDetails_User">
-    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="NoteDetails">
-        <PropertyRef Name="ActionedBy" />
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -430,18 +420,6 @@
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="SpamReport">
-        <PropertyRef Name="UserID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Statistics_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="Statistics" Type="Self.Statistic" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="Statistics">
         <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
@@ -481,11 +459,10 @@
     <EntitySet Name="NoteStatus" EntityType="Self.NoteStatu" />
     <EntitySet Name="NoteTypes" EntityType="Self.NoteType" />
     <EntitySet Name="SpamReports" EntityType="Self.SpamReport" />
-    <EntitySet Name="Statistics" EntityType="Self.Statistic" />
+    <EntitySet Name="SystemConfigurations" EntityType="Self.SystemConfiguration" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <EntitySet Name="UserProfileDetails" EntityType="Self.UserProfileDetail" />
     <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
-    <EntitySet Name="SystemConfiguratioins" EntityType="Self.SystemConfiguratioin" />
     <AssociationSet Name="FK_BuyerRequest_Buyer" Association="Self.FK_BuyerRequest_Buyer">
       <End Role="User" EntitySet="Users" />
       <End Role="BuyerRequest" EntitySet="BuyerRequests" />
@@ -537,10 +514,6 @@
     <AssociationSet Name="FK_SpamReport_User" Association="Self.FK_SpamReport_User">
       <End Role="User" EntitySet="Users" />
       <End Role="SpamReport" EntitySet="SpamReports" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Statistics_User" Association="Self.FK_Statistics_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="Statistics" EntitySet="Statistics" />
     </AssociationSet>
     <AssociationSet Name="FK_User_UserRoles" Association="Self.FK_User_UserRoles">
       <End Role="UserRoles" EntitySet="UserRoles" />

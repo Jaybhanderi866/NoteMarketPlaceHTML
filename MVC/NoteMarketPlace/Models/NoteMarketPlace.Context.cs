@@ -35,10 +35,9 @@ namespace NoteMarketPlace.Models
         public virtual DbSet<NoteStatu> NoteStatus { get; set; }
         public virtual DbSet<NoteType> NoteTypes { get; set; }
         public virtual DbSet<SpamReport> SpamReports { get; set; }
-        public virtual DbSet<Statistic> Statistics { get; set; }
+        public virtual DbSet<SystemConfiguration> SystemConfigurations { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserProfileDetail> UserProfileDetails { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<SystemConfiguratioin> SystemConfiguratioins { get; set; }
     }
 }

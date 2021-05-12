@@ -11,10 +11,9 @@
 namespace NoteMarketPlace.Models
 {
     using System;
+    using System.Web;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Web;
-
     public partial class NoteDetail
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -65,6 +64,10 @@ namespace NoteMarketPlace.Models
         public Nullable<int> ModifiedBy { get; set; }
         public bool IsActive { get; set; }
 
+        public string notefilename { get; set; }
+        public string Publisher { get; set; }
+        public string Modifier { get; set; }
+        public int NumberOfDownload { get; set; }
         public HttpPostedFileBase PictureFile { get; set; }
         public HttpPostedFileBase NoteFile { get; set; }
         public HttpPostedFileBase PreviewFile { get; set; }
@@ -73,7 +76,6 @@ namespace NoteMarketPlace.Models
         public virtual ICollection<BuyerRequest> BuyerRequests { get; set; }
         public virtual Country Country1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-   
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NoteAttachement> NoteAttachements { get; set; }

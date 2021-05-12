@@ -11,6 +11,7 @@
           <ScalarProperty Name="NoteTitle" ColumnName="NoteTitle" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="BuyerEmailID" ColumnName="BuyerEmailID" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="SellType" ColumnName="SellType" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
@@ -46,6 +47,7 @@
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActice" ColumnName="IsActice" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -165,22 +167,27 @@
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Statistics">
-      <EntityTypeMapping TypeName="NoteMarketPlaceModel.Statistic">
-        <MappingFragment StoreEntitySet="Statistics">
+    <EntitySetMapping Name="SystemConfigurations">
+      <EntityTypeMapping TypeName="NoteMarketPlaceModel.SystemConfiguration">
+        <MappingFragment StoreEntitySet="SystemConfiguration">
           <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
-          <ScalarProperty Name="UnderReviewNotes" ColumnName="UnderReviewNotes" />
-          <ScalarProperty Name="PublishedNotes" ColumnName="PublishedNotes" />
-          <ScalarProperty Name="DownloadedNotes" ColumnName="DownloadedNotes" />
-          <ScalarProperty Name="TotalExpensis" ColumnName="TotalExpensis" />
-          <ScalarProperty Name="TotalEarnings" ColumnName="TotalEarnings" />
-          <ScalarProperty Name="BuyerRequests" ColumnName="BuyerRequests" />
-          <ScalarProperty Name="SoldNotes" ColumnName="SoldNotes" />
-          <ScalarProperty Name="RejectedNotes" ColumnName="RejectedNotes" />
+          <ScalarProperty Name="EmailID1" ColumnName="EmailID1" />
+          <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="DefaultProfilePicture" ColumnName="DefaultProfilePicture" />
+          <ScalarProperty Name="DefaultNotePreview" ColumnName="DefaultNotePreview" />
+          <ScalarProperty Name="FacebookUrl" ColumnName="FacebookUrl" />
+          <ScalarProperty Name="TwitterUrl" ColumnName="TwitterUrl" />
+          <ScalarProperty Name="LinkedInUrl" ColumnName="LinkedInUrl" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -194,6 +201,9 @@
           <ScalarProperty Name="EmailID" ColumnName="EmailID" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
+          <ScalarProperty Name="SecondaryEmailID" ColumnName="SecondaryEmailID" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="AdminProfile" ColumnName="AdminProfile" />
           <ScalarProperty Name="IsDetailsSubmitted" ColumnName="IsDetailsSubmitted" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -240,25 +250,6 @@
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="SystemConfiguratioins">
-      <EntityTypeMapping TypeName="NoteMarketPlaceModel.SystemConfiguratioin">
-        <MappingFragment StoreEntitySet="SystemConfiguratioin">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="EmailID1" ColumnName="EmailID1" />
-          <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
-          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-          <ScalarProperty Name="DefaultProfilePicture" ColumnName="DefaultProfilePicture" />
-          <ScalarProperty Name="DefaultNotePreview" ColumnName="DefaultNotePreview" />
-          <ScalarProperty Name="FacebookUrl" ColumnName="FacebookUrl" />
-          <ScalarProperty Name="TwitterUrl" ColumnName="TwitterUrl" />
-          <ScalarProperty Name="LinkedInUrl" ColumnName="LinkedInUrl" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

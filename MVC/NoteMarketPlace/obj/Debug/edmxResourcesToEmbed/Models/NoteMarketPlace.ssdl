@@ -11,6 +11,7 @@
     <Property Name="NoteTitle" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Price" Type="int" Nullable="false" />
     <Property Name="BuyerEmailID" Type="varchar" MaxLength="100" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
     <Property Name="SellType" Type="varchar" MaxLength="50" />
     <Property Name="Status" Type="bit" />
     <Property Name="ApprovedDate" Type="datetime" />
@@ -44,6 +45,7 @@
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActice" Type="bit" />
   </EntityType>
   <EntityType Name="Feedback">
     <Key>
@@ -156,39 +158,26 @@
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" />
   </EntityType>
-  <EntityType Name="Statistics">
+  <EntityType Name="SystemConfiguration">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserID" Type="int" Nullable="false" />
-    <Property Name="UnderReviewNotes" Type="int" Nullable="false" />
-    <Property Name="PublishedNotes" Type="int" Nullable="false" />
-    <Property Name="DownloadedNotes" Type="int" Nullable="false" />
-    <Property Name="TotalExpensis" Type="int" Nullable="false" />
-    <Property Name="TotalEarnings" Type="int" Nullable="false" />
-    <Property Name="BuyerRequests" Type="int" Nullable="false" />
-    <Property Name="SoldNotes" Type="int" Nullable="false" />
-    <Property Name="RejectedNotes" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="SystemConfiguratioin">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="EmailID1" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="EmailID2" Type="varchar" MaxLength="100" />
+    <Property Name="EmailID2" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="PhoneNumber" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="DefaultProfilePicture" Type="varchar(max)" Nullable="false" />
-    <Property Name="DefaultNotePreview" Type="varchar(max)" Nullable="false" />
-    <Property Name="FacebookUrl" Type="varbinary" MaxLength="50" Nullable="false" />
-    <Property Name="TwitterUrl" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="LinkedInUrl" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DefaultProfilePicture" Type="varchar(max)" />
+    <Property Name="DefaultNotePreview" Type="varchar(max)" />
+    <Property Name="FacebookUrl" Type="varchar(max)" />
+    <Property Name="TwitterUrl" Type="varchar(max)" />
+    <Property Name="LinkedInUrl" Type="varchar(max)" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -201,6 +190,9 @@
     <Property Name="EmailID" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="IsEmailVerified" Type="bit" Nullable="false" />
+    <Property Name="SecondaryEmailID" Type="varchar" MaxLength="50" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
+    <Property Name="AdminProfile" Type="varchar(max)" />
     <Property Name="IsDetailsSubmitted" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedBy" Type="int" />
@@ -367,14 +359,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_NoteDetails_User">
-    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="NoteDetails">
-        <PropertyRef Name="ActionedBy" />
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -398,18 +390,6 @@
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="SpamReport">
-        <PropertyRef Name="UserID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Statistics_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="Statistics" Type="Self.Statistics" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="Statistics">
         <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
@@ -449,8 +429,7 @@
     <EntitySet Name="NoteStatus" EntityType="Self.NoteStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NoteTypes" EntityType="Self.NoteTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SpamReport" EntityType="Self.SpamReport" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Statistics" EntityType="Self.Statistics" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="SystemConfiguratioin" EntityType="Self.SystemConfiguratioin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SystemConfiguration" EntityType="Self.SystemConfiguration" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserProfileDetails" EntityType="Self.UserProfileDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
@@ -505,10 +484,6 @@
     <AssociationSet Name="FK_SpamReport_User" Association="Self.FK_SpamReport_User">
       <End Role="User" EntitySet="User" />
       <End Role="SpamReport" EntitySet="SpamReport" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Statistics_User" Association="Self.FK_Statistics_User">
-      <End Role="User" EntitySet="User" />
-      <End Role="Statistics" EntitySet="Statistics" />
     </AssociationSet>
     <AssociationSet Name="FK_User_UserRoles" Association="Self.FK_User_UserRoles">
       <End Role="UserRoles" EntitySet="UserRoles" />

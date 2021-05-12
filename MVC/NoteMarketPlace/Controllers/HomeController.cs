@@ -21,10 +21,16 @@ namespace NoteMarketPlace.Controllers
         public ActionResult Home()
         {
             ViewBag.isRegister = false;
+            
             if (userId != 0)
             {
-                ViewBag.isRegister = true;
-                var userprofile = db.UserProfileDetails.FirstOrDefault(m => m.UserID == userId);
+                
+                var userprofile = db.UserProfileDetails.SingleOrDefault(m => m.UserID == userId);
+                if (db.Users.SingleOrDefault(m => m.UserId == userId).UserRolesID == 1)
+                    ViewBag.isRegister = true;
+                else
+                    return RedirectToAction("Login", "Admin", new { emailID = userprofile.User.EmailID, Password = userprofile.User.Password });
+
                 if (userprofile != null)
                     ViewBag.profilePicture = userprofile.ProfilePicture;
             }
@@ -59,7 +65,6 @@ namespace NoteMarketPlace.Controllers
             else
             {
                 UserRole userRole = db.UserRoles.SingleOrDefault(m => m.UserRolesID == 1);
-                //user.UserId = 8;
                 user.UserRolesID = 1;
                 user.IsActive = true;
                 user.IsDetailsSubmitted = false;
@@ -151,9 +156,9 @@ namespace NoteMarketPlace.Controllers
             }
         }
 
-        public ActionResult Login()
+        public ActionResult Login(int? adminID)
         {
-            if (userId == 0)
+            if (userId == 0 || adminID == 0)
             {
                 HttpCookie cookie = Request.Cookies["RememberMe"];
                 User v_user = new User();
@@ -199,30 +204,38 @@ namespace NoteMarketPlace.Controllers
             User auth = db.Users.Where(m => m.EmailID.Equals(user.EmailID) && m.Password.Equals(user.Password)).SingleOrDefault();
             if (auth != null)
             {
-                if (auth.IsActive == true)
+                if(auth.UserRolesID == 1) 
                 {
-                    if (auth.IsEmailVerified == true)
+                    if (auth.IsActive == true)
                     {
-                        userId = auth.UserId;
-                        if (auth.IsDetailsSubmitted == true)
+                        if (auth.IsEmailVerified == true)
                         {
-                            return RedirectToAction("Home", "Home");
+                            userId = auth.UserId;
+                            if (auth.IsDetailsSubmitted == true)
+                            {
+                                return RedirectToAction("Home", "Home");
+                            }
+                            else
+                            {
+                                return RedirectToAction("UserProfile", "Home");
+                            }
                         }
                         else
                         {
-                            return RedirectToAction("UserProfile", "Home");
+                            ViewBag.auth_msg = "Please verify your Email Address!";
+                            return View(user);
                         }
                     }
                     else
                     {
-                        ViewBag.auth_msg = "Please verify your Email Address!";
-                        return View(user);
+                        ViewBag.auth_msg = "You are not a Member!";
                     }
                 }
                 else
                 {
-                    ViewBag.auth_msg = "You are not a Member!";
+                    return RedirectToAction("Login", "Admin", new { emailID = auth.EmailID, Password = auth.Password });
                 }
+                
             }
             else
             {
@@ -328,8 +341,8 @@ namespace NoteMarketPlace.Controllers
         [HttpPost]
         public ActionResult ContactUs(ContactU contact)
         {
-            ViewBag.IsEmailReadOnly = false;
-            ViewBag.IsRegister = false;
+            ViewBag.IsEmailReadOnly = true;
+            ViewBag.IsRegister = true;
             if (!ModelState.IsValid)
             {
                 return View();
@@ -350,7 +363,7 @@ namespace NoteMarketPlace.Controllers
                 smtp.EnableSsl = true;
                 smtp.Send(mail);
 
-                return View();
+                return RedirectToAction("ContactUs","Home");
             }
             catch (Exception)
             {
@@ -369,7 +382,7 @@ namespace NoteMarketPlace.Controllers
                 if (userprofile != null)
                     ViewBag.profilePicture = userprofile.ProfilePicture;
             }
-            List<NoteDetail> notedetail = db.NoteDetails.Where(m=>m.NoteStatus == 7).ToList();
+            List<NoteDetail> notedetail = db.NoteDetails.Where(m=>m.NoteStatus == 7 && m.IsActive == true).ToList();
             if (!string.IsNullOrEmpty(search))
             {
                 notedetail = notedetail.Where(m => m.Title.ToLower().StartsWith(search.ToLower())).ToList();
@@ -426,9 +439,15 @@ namespace NoteMarketPlace.Controllers
         {
             if (userId != 0)
             {
-                var userprofile = db.UserProfileDetails.FirstOrDefault(m => m.UserID == userId);
+                var userprofile = db.UserProfileDetails.SingleOrDefault(m => m.UserID == userId);
                 if (userprofile != null)
+                {
+                    userprofile.CountryCode = userprofile.PhoneNumber.Substring(0, 1);
+                    userprofile.PhoneNumber = userprofile.PhoneNumber.Substring(2);
                     ViewBag.profilePicture = userprofile.ProfilePicture;
+                }
+                else
+                    userprofile = new UserProfileDetail();
 
                 User v_user = db.Users.SingleOrDefault(m => m.UserId == userId);
                 userprofile.User = v_user;
@@ -546,6 +565,7 @@ namespace NoteMarketPlace.Controllers
             userId = 0;
             ViewBag.isRegister = false;
             return RedirectToAction("Home", "Home");
+
         }
 
         public ActionResult Dashboard()
@@ -606,7 +626,7 @@ namespace NoteMarketPlace.Controllers
 
                     }
                     db.SaveChanges();
-                    notedetails = db.NoteDetails.Where(m => m.UserID == userId && m.IsActive == true && m.NoteStatus != 7).OrderByDescending(m => m.CreatedDate).ToList();
+                    notedetails = db.NoteDetails.Where(m => m.UserID == userId && m.IsActive == true && ( m.NoteStatus == 1 || m.NoteStatus == 2 || m.NoteStatus == 4 )).OrderByDescending(m => m.CreatedDate).ToList();
 
                 }
                 if (!string.IsNullOrEmpty(search))
@@ -812,7 +832,7 @@ namespace NoteMarketPlace.Controllers
                     noteDetail.NoteStatus = 1 ;
                     break;
                 case "publish":
-                    noteDetail.NoteStatus = 4;
+                    noteDetail.NoteStatus = 2;
                     break;
             }
             
@@ -881,7 +901,7 @@ namespace NoteMarketPlace.Controllers
                     noteAttachement.FileName = notefileName;
                     noteAttachement.FilePath = notepath;
                     noteAttachement.IsActive = true;
-                    noteAttachement.NoteDetail = noteDetail;
+                   // noteAttachement.NoteDetail = noteDetail;
                     noteAttachement.ModifiedBy = noteDetail.UserID;
                     noteAttachement.ModifiedDate = DateTime.Now;
                     noteDetail.NoteSize = noteDetail.NoteFile.ContentLength;
@@ -939,7 +959,7 @@ namespace NoteMarketPlace.Controllers
 
            try
            {
-                if (noteDetail.NoteStatus == 4)
+                if (noteDetail.NoteStatus == 2)
                 {
                     User v_user = db.Users.SingleOrDefault(m => m.UserId == userId);
                     MailMessage mail = new MailMessage("marketplacenote@gmail.com", "jaybhanderi866@gmail.com");//,user.EmailID.ToString());               
@@ -976,8 +996,7 @@ namespace NoteMarketPlace.Controllers
                 {
                     NoteDetail noteDetail1 = db.NoteDetails.SingleOrDefault(m => m.NoteID == noteDetail.NoteID);
 
-                    noteDetail1.NoteID = noteDetail.NoteID;
-                    noteDetail1.UserID = noteDetail.UserID;
+                   
                     noteDetail1.Title = noteDetail.Title;
                     noteDetail1.Category = noteDetail.Category;
                     noteDetail1.BookPicture = noteDetail.BookPicture;
@@ -994,7 +1013,7 @@ namespace NoteMarketPlace.Controllers
                     noteDetail1.NotePreview = noteDetail.NotePreview;
                     noteDetail1.NoteSize = noteDetail.NoteSize;
                     noteDetail1.PublishedDate = DateTime.Now;
-                    noteDetail1.NoteStatus = noteDetail.NoteStatus;
+                    noteDetail1.NoteStatus = 2;
                     noteDetail1.CreatedDate = noteDetail.CreatedDate;
                     noteDetail1.ModifiedDate = DateTime.Now;
                     noteDetail1.IsActive = noteDetail.IsActive;
@@ -1004,15 +1023,15 @@ namespace NoteMarketPlace.Controllers
                     
                     NoteAttachement notAttachement = db.NoteAttachements.SingleOrDefault(m => m.NoteID == noteDetail1.NoteID);
 
-                    
+                    notAttachement.FileName = noteAttachement.FileName;
+                    notAttachement.FilePath = noteAttachement.FilePath;
                     notAttachement.IsActive = true;
-                    notAttachement.NoteDetail = noteDetail;
                     notAttachement.ModifiedBy = noteDetail.UserID;
                     notAttachement.ModifiedDate = DateTime.Now;
+
                     db.SaveChanges();
-
                 }
-
+                
                 return RedirectToAction("Dashboard", "Home");
            }
            catch (Exception)
@@ -1105,10 +1124,11 @@ namespace NoteMarketPlace.Controllers
                     noteRequest.BuyerID = userId;
                     noteRequest.SellerID = notedetail.UserID;
                     noteRequest.NoteID = notedetail.NoteID;
-                    noteRequest.NoteTitle = noteRequest.NoteTitle;
-                    noteRequest.Price = noteRequest.Price;
-                    noteRequest.BuyerEmailID = noteRequest.BuyerEmailID;
-                    noteRequest.SellType = noteRequest.SellType;
+                    noteRequest.NoteTitle = notedetail.Title;
+                    noteRequest.Price = (int)notedetail.SellPrice;
+                    noteRequest.BuyerEmailID = db.Users.SingleOrDefault(m=>m.UserId == userId).EmailID;
+                    noteRequest.PhoneNumber = db.UserProfileDetails.SingleOrDefault(m => m.UserID == userId).PhoneNumber;
+                    noteRequest.SellType = (notedetail.IsPaid?"Paid":"Free");
                     noteRequest.ApprovedDate = DateTime.Now;
 
                     if (notedetail.SellPrice == 0)
@@ -1165,7 +1185,7 @@ namespace NoteMarketPlace.Controllers
             return View(notedetail);
         }
 
-        public ActionResult BuyerRequest(int? page, string search, string sortBy)
+        public ActionResult BuyerRequest(int? page, string search, string sortBy , string noteId , string buyerId)
         {
             if (userId == 0)
             {
@@ -1175,31 +1195,48 @@ namespace NoteMarketPlace.Controllers
             if (userprofile != null)
                 ViewBag.profilePicture = userprofile.ProfilePicture;
 
-            List<BuyerRequest> noteRequests = new List<BuyerRequest>();
-            List<BuyerRequest> noteRequests1 = db.BuyerRequests.Where(m => m.SellerID == userId && m.Status == false).ToList();
-
-            foreach (var notes in noteRequests1)
+            if (!string.IsNullOrEmpty(noteId))
             {
-                var noteRequestsObj = new BuyerRequest();
-                NoteDetail noteDetails = db.NoteDetails.SingleOrDefault(m => m.NoteID == notes.NoteID);
-                noteRequestsObj.NoteID = noteDetails.NoteID;
-                noteRequestsObj.NoteTitle = noteDetails.Title;
-                noteRequestsObj.Category = noteDetails.NoteCategory.Name;
-                noteRequestsObj.Price = (int)noteDetails.SellPrice;
-                noteRequestsObj.ApprovedDate = notes.ApprovedDate;
-                noteRequestsObj.BuyerEmailID = db.Users.SingleOrDefault(m => m.UserId == notes.BuyerID).EmailID;
-                noteRequestsObj.BuyerPhoneNumber = db.UserProfileDetails.SingleOrDefault(m => m.UserID == notes.BuyerID).PhoneNumber;
-                if (noteDetails.IsPaid == true)
-                    noteRequestsObj.SellType = "Paid";
-                else
-                    noteRequestsObj.SellType = "Free";
+                BuyerRequest noteRequest = db.BuyerRequests.SingleOrDefault(m => m.NoteID.ToString().Equals(noteId) && m.BuyerID.ToString().Equals(buyerId));
+                if (noteRequest != null)
+                {
+                    noteRequest.Status = true;
+                    db.SaveChanges();
+                    try
+                    {
+                        User buyer = db.Users.SingleOrDefault(m => m.UserId == userId);
+                        User seller = db.Users.SingleOrDefault(m => m.UserId == noteRequest.SellerID);
+                        MailMessage mail = new MailMessage("marketplacenote@gmail.com", "jaybhanderi866@gmail.com");//,user.EmailID.ToString());               
+                        mail.Subject = seller.FirstName + " " + seller.LastName + " Allows you to download a note";
+                        string Body = "Hello " + buyer.FirstName + " " + buyer.LastName + ",<br>We would like to inform you that," + seller.FirstName + " " + seller.LastName + " Allows you to download a note.<br>Please login and see My Download tabs to download particular note.<br><br>Regards,<br>Notes Marketplace";
 
-                noteRequests.Add(noteRequestsObj);
+                        mail.Body = Body;
+                        mail.IsBodyHtml = true;
+
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = "smtp.gmail.com";
+                        smtp.Port = 587;
+                        smtp.UseDefaultCredentials = false;
+
+                        smtp.Credentials = new System.Net.NetworkCredential("marketplacenote@gmail.com", "Note@123");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                    catch (Exception)
+                    {
+                        return HttpNotFound();
+                    }
+                }
             }
+
+            
+            List<BuyerRequest> noteRequests = db.BuyerRequests.Where(m => m.SellerID == userId && m.Status == false).ToList();
+
+            
 
             noteRequests = noteRequests.OrderByDescending(m => m.ApprovedDate).ToList();
             if (!string.IsNullOrEmpty(search))
-                noteRequests = noteRequests.Where(m => m.NoteTitle.ToLower().StartsWith(search.ToLower()) || m.Category.ToLower().StartsWith(search.ToLower()) || m.BuyerEmailID.ToLower().StartsWith(search.ToLower()) || m.BuyerPhoneNumber.ToLower().StartsWith(search.ToLower()) || m.Price.ToString().Equals(search.ToLower())).ToList();
+                noteRequests = noteRequests.Where(m => m.NoteTitle.ToLower().StartsWith(search.ToLower()) || m.Category.ToLower().StartsWith(search.ToLower()) || m.BuyerEmailID.ToLower().StartsWith(search.ToLower()) || m.PhoneNumber.ToLower().StartsWith(search.ToLower()) || m.Price.ToString().Equals(search.ToLower())).ToList();
             if (!string.IsNullOrEmpty(sortBy))
             {
                 if (sortBy.Equals("title"))
@@ -1216,7 +1253,7 @@ namespace NoteMarketPlace.Controllers
                 }
                 else if (sortBy.Equals("PhoneNumber"))
                 {
-                    noteRequests = noteRequests.OrderBy(m => m.BuyerPhoneNumber).ToList();
+                    noteRequests = noteRequests.OrderBy(m => m.PhoneNumber).ToList();
                 }
                 else if (sortBy.Equals("price"))
                 {
@@ -1302,7 +1339,8 @@ namespace NoteMarketPlace.Controllers
                 var notedetail = db.NoteDetails.FirstOrDefault(m => m.NoteID == noteId);
                 if (notedetail != null)
                 {
-                    return RedirectToAction("DownloadFile", "Home", new { filename = noteAttachement.FileName});
+                    NoteAttachement note = db.NoteAttachements.SingleOrDefault(m => m.NoteID == noteId);
+                    return RedirectToAction("DownloadFile", "Home", new { filename = note.FileName });
                 }
 
             }
@@ -1317,13 +1355,18 @@ namespace NoteMarketPlace.Controllers
                     if (spamReport1 != null)
                     {
                         spamReport1.Remark = spamReport.Remark;
+                        spamReport1.IsActive = true;
                         spamReport1.ModifiedDate = DateTime.Now;
+                        spamReport1.ModifiedBy = userId;
+                        
                         db.SaveChanges();
                     }
                     else
                     {
                         spamReport.UserID = userId;
+                        spamReport.IsActive = true;
                         spamReport.CreatedDate = DateTime.Now;
+                        spamReport.CreatedBy = userId;
                         db.SpamReports.Add(spamReport);
                         db.SaveChanges();
                     }

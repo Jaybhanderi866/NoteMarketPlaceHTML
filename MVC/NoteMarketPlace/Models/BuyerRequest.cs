@@ -19,17 +19,16 @@ namespace NoteMarketPlace.Models
         public int BuyerID { get; set; }
         public int SellerID { get; set; }
         public string NoteTitle { get; set; }
+        public string Category { get; set; }
         public int Price { get; set; }
         public string BuyerEmailID { get; set; }
-
-        public string BuyerPhoneNumber { get; set; }
-        public string Category { get; set; }
         public string SellType { get; set; }
         public Nullable<bool> Status { get; set; }
         public Nullable<System.DateTime> ApprovedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public bool IsActive { get; set; }
+        public string PhoneNumber { get; set; }
 
         public virtual User User { get; set; }
         public virtual NoteDetail NoteDetail { get; set; }

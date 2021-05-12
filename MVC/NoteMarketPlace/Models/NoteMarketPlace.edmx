@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="NoteMarketPlaceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="NoteMarketPlaceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BuyerRequest">
           <Key>
             <PropertyRef Name="ID" />
@@ -16,6 +16,7 @@
           <Property Name="NoteTitle" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="BuyerEmailID" Type="varchar" MaxLength="100" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
           <Property Name="SellType" Type="varchar" MaxLength="50" />
           <Property Name="Status" Type="bit" />
           <Property Name="ApprovedDate" Type="datetime" />
@@ -49,6 +50,7 @@
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="IsActice" Type="bit" />
         </EntityType>
         <EntityType Name="Feedback">
           <Key>
@@ -161,39 +163,26 @@
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="Statistics">
+        <EntityType Name="SystemConfiguration">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="UnderReviewNotes" Type="int" Nullable="false" />
-          <Property Name="PublishedNotes" Type="int" Nullable="false" />
-          <Property Name="DownloadedNotes" Type="int" Nullable="false" />
-          <Property Name="TotalExpensis" Type="int" Nullable="false" />
-          <Property Name="TotalEarnings" Type="int" Nullable="false" />
-          <Property Name="BuyerRequests" Type="int" Nullable="false" />
-          <Property Name="SoldNotes" Type="int" Nullable="false" />
-          <Property Name="RejectedNotes" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SystemConfiguratioin">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="EmailID1" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="EmailID2" Type="varchar" MaxLength="100" />
+          <Property Name="EmailID2" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="DefaultProfilePicture" Type="varchar(max)" Nullable="false" />
-          <Property Name="DefaultNotePreview" Type="varchar(max)" Nullable="false" />
-          <Property Name="FacebookUrl" Type="varbinary" MaxLength="50" Nullable="false" />
-          <Property Name="TwitterUrl" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="LinkedInUrl" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DefaultProfilePicture" Type="varchar(max)" />
+          <Property Name="DefaultNotePreview" Type="varchar(max)" />
+          <Property Name="FacebookUrl" Type="varchar(max)" />
+          <Property Name="TwitterUrl" Type="varchar(max)" />
+          <Property Name="LinkedInUrl" Type="varchar(max)" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -206,6 +195,9 @@
           <Property Name="EmailID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IsEmailVerified" Type="bit" Nullable="false" />
+          <Property Name="SecondaryEmailID" Type="varchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
+          <Property Name="AdminProfile" Type="varchar(max)" />
           <Property Name="IsDetailsSubmitted" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
@@ -372,14 +364,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_NoteDetails_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="NoteDetails" Type="Self.NoteDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="NoteDetails">
-              <PropertyRef Name="ActionedBy" />
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -403,18 +395,6 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="SpamReport">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Statistics_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Statistics" Type="Self.Statistics" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Statistics">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -454,8 +434,7 @@
           <EntitySet Name="NoteStatus" EntityType="Self.NoteStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NoteTypes" EntityType="Self.NoteTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpamReport" EntityType="Self.SpamReport" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Statistics" EntityType="Self.Statistics" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SystemConfiguratioin" EntityType="Self.SystemConfiguratioin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemConfiguration" EntityType="Self.SystemConfiguration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfileDetails" EntityType="Self.UserProfileDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
@@ -511,10 +490,6 @@
             <End Role="User" EntitySet="User" />
             <End Role="SpamReport" EntitySet="SpamReport" />
           </AssociationSet>
-          <AssociationSet Name="FK_Statistics_User" Association="Self.FK_Statistics_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Statistics" EntitySet="Statistics" />
-          </AssociationSet>
           <AssociationSet Name="FK_User_UserRoles" Association="Self.FK_User_UserRoles">
             <End Role="UserRoles" EntitySet="UserRoles" />
             <End Role="User" EntitySet="User" />
@@ -524,7 +499,8 @@
             <End Role="UserProfileDetails" EntitySet="UserProfileDetails" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NoteMarketPlaceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -539,6 +515,7 @@
           <Property Name="NoteTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="BuyerEmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SellType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="Boolean" />
           <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
@@ -575,6 +552,7 @@
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="IsActice" Type="Boolean" />
           <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_Countries" FromRole="Countries" ToRole="NoteDetails" />
         </EntityType>
         <EntityType Name="Feedback">
@@ -703,24 +681,28 @@
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="NoteDetail" Relationship="Self.FK_SpamReport_NoteDetails" FromRole="SpamReport" ToRole="NoteDetails" />
           <NavigationProperty Name="User" Relationship="Self.FK_SpamReport_User" FromRole="SpamReport" ToRole="User" />
         </EntityType>
-        <EntityType Name="Statistic">
+        <EntityType Name="SystemConfiguration">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="UnderReviewNotes" Type="Int32" Nullable="false" />
-          <Property Name="PublishedNotes" Type="Int32" Nullable="false" />
-          <Property Name="DownloadedNotes" Type="Int32" Nullable="false" />
-          <Property Name="TotalExpensis" Type="Int32" Nullable="false" />
-          <Property Name="TotalEarnings" Type="Int32" Nullable="false" />
-          <Property Name="BuyerRequests" Type="Int32" Nullable="false" />
-          <Property Name="SoldNotes" Type="Int32" Nullable="false" />
-          <Property Name="RejectedNotes" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Statistics_User" FromRole="Statistics" ToRole="User" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="EmailID1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailID2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DefaultProfilePicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultNotePreview" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FacebookUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TwitterUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LinkedInUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -733,6 +715,9 @@
           <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IsEmailVerified" Type="Boolean" Nullable="false" />
+          <Property Name="SecondaryEmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AdminProfile" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDetailsSubmitted" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" />
@@ -744,7 +729,6 @@
           <NavigationProperty Name="Feedbacks" Relationship="Self.FK_Feedback_User" FromRole="User" ToRole="Feedback" />
           <NavigationProperty Name="NoteDetails" Relationship="Self.FK_NoteDetails_User" FromRole="User" ToRole="NoteDetails" />
           <NavigationProperty Name="SpamReports" Relationship="Self.FK_SpamReport_User" FromRole="User" ToRole="SpamReport" />
-          <NavigationProperty Name="Statistics" Relationship="Self.FK_Statistics_User" FromRole="User" ToRole="Statistics" />
           <NavigationProperty Name="UserRole" Relationship="Self.FK_User_UserRoles" FromRole="User" ToRole="UserRoles" />
           <NavigationProperty Name="UserProfileDetails" Relationship="Self.FK_UserProfileDetails_User" FromRole="User" ToRole="UserProfileDetails" />
         </EntityType>
@@ -787,24 +771,6 @@
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_UserRoles" FromRole="UserRoles" ToRole="User" />
-        </EntityType>
-        <EntityType Name="SystemConfiguratioin">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="EmailID1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="EmailID2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DefaultProfilePicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DefaultNotePreview" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="FacebookUrl" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
-          <Property Name="TwitterUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LinkedInUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <Association Name="FK_BuyerRequest_Buyer">
           <End Role="User" Type="Self.User" Multiplicity="1" />
@@ -927,14 +893,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_NoteDetails_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="NoteDetails" Type="Self.NoteDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="NoteDetails">
-              <PropertyRef Name="ActionedBy" />
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -958,18 +924,6 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="SpamReport">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Statistics_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Statistics" Type="Self.Statistic" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Statistics">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1009,11 +963,10 @@
           <EntitySet Name="NoteStatus" EntityType="Self.NoteStatu" />
           <EntitySet Name="NoteTypes" EntityType="Self.NoteType" />
           <EntitySet Name="SpamReports" EntityType="Self.SpamReport" />
-          <EntitySet Name="Statistics" EntityType="Self.Statistic" />
+          <EntitySet Name="SystemConfigurations" EntityType="Self.SystemConfiguration" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserProfileDetails" EntityType="Self.UserProfileDetail" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
-          <EntitySet Name="SystemConfiguratioins" EntityType="Self.SystemConfiguratioin" />
           <AssociationSet Name="FK_BuyerRequest_Buyer" Association="Self.FK_BuyerRequest_Buyer">
             <End Role="User" EntitySet="Users" />
             <End Role="BuyerRequest" EntitySet="BuyerRequests" />
@@ -1066,10 +1019,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="SpamReport" EntitySet="SpamReports" />
           </AssociationSet>
-          <AssociationSet Name="FK_Statistics_User" Association="Self.FK_Statistics_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Statistics" EntitySet="Statistics" />
-          </AssociationSet>
           <AssociationSet Name="FK_User_UserRoles" Association="Self.FK_User_UserRoles">
             <End Role="UserRoles" EntitySet="UserRoles" />
             <End Role="User" EntitySet="Users" />
@@ -1095,6 +1044,7 @@
                 <ScalarProperty Name="NoteTitle" ColumnName="NoteTitle" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="BuyerEmailID" ColumnName="BuyerEmailID" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="SellType" ColumnName="SellType" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
@@ -1130,6 +1080,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsActice" ColumnName="IsActice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1249,22 +1200,27 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Statistics">
-            <EntityTypeMapping TypeName="NoteMarketPlaceModel.Statistic">
-              <MappingFragment StoreEntitySet="Statistics">
+          <EntitySetMapping Name="SystemConfigurations">
+            <EntityTypeMapping TypeName="NoteMarketPlaceModel.SystemConfiguration">
+              <MappingFragment StoreEntitySet="SystemConfiguration">
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="UnderReviewNotes" ColumnName="UnderReviewNotes" />
-                <ScalarProperty Name="PublishedNotes" ColumnName="PublishedNotes" />
-                <ScalarProperty Name="DownloadedNotes" ColumnName="DownloadedNotes" />
-                <ScalarProperty Name="TotalExpensis" ColumnName="TotalExpensis" />
-                <ScalarProperty Name="TotalEarnings" ColumnName="TotalEarnings" />
-                <ScalarProperty Name="BuyerRequests" ColumnName="BuyerRequests" />
-                <ScalarProperty Name="SoldNotes" ColumnName="SoldNotes" />
-                <ScalarProperty Name="RejectedNotes" ColumnName="RejectedNotes" />
+                <ScalarProperty Name="EmailID1" ColumnName="EmailID1" />
+                <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="DefaultProfilePicture" ColumnName="DefaultProfilePicture" />
+                <ScalarProperty Name="DefaultNotePreview" ColumnName="DefaultNotePreview" />
+                <ScalarProperty Name="FacebookUrl" ColumnName="FacebookUrl" />
+                <ScalarProperty Name="TwitterUrl" ColumnName="TwitterUrl" />
+                <ScalarProperty Name="LinkedInUrl" ColumnName="LinkedInUrl" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1278,6 +1234,9 @@
                 <ScalarProperty Name="EmailID" ColumnName="EmailID" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
+                <ScalarProperty Name="SecondaryEmailID" ColumnName="SecondaryEmailID" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="AdminProfile" ColumnName="AdminProfile" />
                 <ScalarProperty Name="IsDetailsSubmitted" ColumnName="IsDetailsSubmitted" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -1324,25 +1283,6 @@
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SystemConfiguratioins">
-            <EntityTypeMapping TypeName="NoteMarketPlaceModel.SystemConfiguratioin">
-              <MappingFragment StoreEntitySet="SystemConfiguratioin">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="EmailID1" ColumnName="EmailID1" />
-                <ScalarProperty Name="EmailID2" ColumnName="EmailID2" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="DefaultProfilePicture" ColumnName="DefaultProfilePicture" />
-                <ScalarProperty Name="DefaultNotePreview" ColumnName="DefaultNotePreview" />
-                <ScalarProperty Name="FacebookUrl" ColumnName="FacebookUrl" />
-                <ScalarProperty Name="TwitterUrl" ColumnName="TwitterUrl" />
-                <ScalarProperty Name="LinkedInUrl" ColumnName="LinkedInUrl" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
